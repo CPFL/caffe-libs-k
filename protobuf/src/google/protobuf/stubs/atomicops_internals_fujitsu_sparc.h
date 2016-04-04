@@ -170,10 +170,22 @@ namespace google
 
 			#ifdef __LP64__
 
+				inline void  NoBarrier_Store(volatile Atomic64* ptr, Atomic64 value)
+				{
+					*ptr = value;
+					//__atomic_store_n(ptr, value, __ATOMIC_RELEASE);
+				}
+
 				inline void Release_Store(volatile Atomic64* ptr, Atomic64 value)
 				{
 					*ptr = value;
 					//__atomic_store_n(ptr, value, __ATOMIC_RELEASE);
+				}
+
+				inline Atomic64 NoBarrier_Load(volatile const Atomic64* ptr)
+				{
+					return *ptr;
+					//return __atomic_load_n(ptr, __ATOMIC_ACQUIRE);
 				}
 
 				inline Atomic64 Acquire_Load(volatile const Atomic64* ptr)
@@ -229,6 +241,49 @@ namespace google
 					//__atomic_compare_exchange_n(ptr, &old_value, new_value, true, __ATOMIC_RELAXED, __ATOMIC_RELAXED);
 					//return old_value;
 				}
+			inline Atomic64 NoBarrier_AtomicExchange(volatile Atomic64* ptr,
+													 Atomic64 new_value)
+			{
+				register volatile int old_v, new_v;
+				__asm__ __volatile__ ("\t! atomic_swap_64\n\t"
+									"ldx       [%3], %0\n"
+									"1:\n\t"
+									"mov      %4, %1\n\t"
+									"casx      [%3], %0, %1\n\t"
+									"cmp      %0, %1\n\t"
+									"bne,a,pn %%icc, 1b\n\t"
+									" mov     %1, %0\n\t"
+									"mov      %4, %1\n"
+									: "=&r" (old_v), "=&r" (new_v), "=m" (*ptr)
+									: "r" (ptr), "r" (new_value), "m" (*ptr)
+									: "cc");
+				/* if (old_value) { } */
+				if (new_v) { }
+				return old_v;
+				//return __atomic_exchange_n(ptr, new_value, __ATOMIC_RELAXED);
+			}
+			inline Atomic64 NoBarrier_AtomicIncrement(volatile Atomic64* ptr,
+													Atomic64 increment)
+			{
+				register volatile int old_value, new_value;
+				__asm__ __volatile__ ("\t! atomic_add_64\n\t"
+									"ldx       [%3], %0\n"
+									"1:\n\t"
+									"add      %4, %0, %1\n\t"
+									"casx      [%3], %0, %1\n\t"
+									"cmp      %0, %1\n\t"
+									"bne,a,pn %%icc, 1b\n\t"
+									" mov     %1, %0\n\t"
+									"add      %4, %0, %1\n"
+									: "=&r" (old_value), "=&r" (new_value), "=m" (*ptr)
+									: "r" (ptr), "ir" (increment), "m" (*ptr)
+									: "cc");
+				if (old_value) { }
+				if (new_value) { }
+				MemoryBarrier();
+				return *ptr;
+				//return __atomic_add_fetch(ptr, increment, __ATOMIC_SEQ_CST);
+			}
 
 			#endif // defined(__LP64__)
 
