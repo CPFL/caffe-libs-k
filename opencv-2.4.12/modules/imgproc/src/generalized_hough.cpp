@@ -953,7 +953,10 @@ namespace
 
         features.resize(levels + 1);
         for_each(features.begin(), features.end(), mem_fun_ref(&vector<Feature>::clear));
-        for_each(features.begin(), features.end(), bind2nd(mem_fun_ref(&vector<Feature>::reserve), maxSize));
+        //for_each(features.begin(), features.end(), bind2nd(mem_fun_ref(&vector<Feature>::reserve), maxSize));
+        for (vector<vector<Feature> >::iterator i = features.begin(); i != features.end(); i++   ) {//fujitsy change
+            i->reserve(maxSize);
+        }
 
         for (size_t i = 0; i < points.size(); ++i)
         {
