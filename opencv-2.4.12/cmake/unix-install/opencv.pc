@@ -1,0 +1,13 @@
+# Package Information for pkg-config
+
+prefix=/home/ra000022/a03330/opencv-2.4.12/cmake/install
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir_old=${prefix}/include/opencv
+includedir_new=${prefix}/include
+
+Name: OpenCV
+Description: Open Source Computer Vision Library
+Version: 2.4.12
+Libs: -L${exec_prefix}/lib -lopencv_calib3d -lopencv_core -lopencv_features2d -lopencv_flann -lopencv_highgui -lopencv_imgproc -lopencv_ml -lopencv_nonfree -lopencv_objdetect -lopencv_photo -lopencv_stitching
+Cflags: -I${includedir_old} -I${includedir_new}
