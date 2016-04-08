@@ -1,0 +1,283 @@
+The target system is: Linux -  - s64fx
+The host system is: Linux - 2.6.32-431.5.1.el6.x86_64 - x86_64
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /opt/FJSVtclang/GM-1.2.0-19/bin/FCCpx 
+Build flags: -Xg;-pthread;-std=c++11;-Kfast;-Kopenmp
+Id flags: 
+
+The output was:
+0
+FCCpx: warning: Invalid suboption specified for -std=.
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /opt/FJSVtclang/GM-1.2.0-19/bin/fccpx 
+Build flags: -Xg;-pthread;-Kfast;-Kopenmp
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_1154e/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_1154e.dir/build.make CMakeFiles/cmTC_1154e.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1154e.dir/testCXXCompiler.cxx.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/FCCpx    -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_1154e.dir/testCXXCompiler.cxx.o -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_1154e
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1154e.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/FCCpx        CMakeFiles/cmTC_1154e.dir/testCXXCompiler.cxx.o  -o cmTC_1154e  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_af161/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_af161.dir/build.make CMakeFiles/cmTC_af161.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_af161.dir/CMakeCXXCompilerABI.cpp.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/FCCpx    -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_af161.dir/CMakeCXXCompilerABI.cpp.o -c /home/ra000022/a03330/install/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_af161
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_af161.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/FCCpx        CMakeFiles/cmTC_af161.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_af161   
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_fedd7/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_fedd7.dir/build.make CMakeFiles/cmTC_fedd7.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fedd7.dir/testCCompiler.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_fedd7.dir/testCCompiler.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_fedd7
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fedd7.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx       CMakeFiles/cmTC_fedd7.dir/testCCompiler.c.o  -o cmTC_fedd7  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_9af6d/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_9af6d.dir/build.make CMakeFiles/cmTC_9af6d.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9af6d.dir/CMakeCCompilerABI.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_9af6d.dir/CMakeCCompilerABI.c.o   -c /home/ra000022/a03330/install/share/cmake-3.5/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_9af6d
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9af6d.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx       CMakeFiles/cmTC_9af6d.dir/CMakeCCompilerABI.c.o  -o cmTC_9af6d   
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_d365b/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_d365b.dir/build.make CMakeFiles/cmTC_d365b.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d365b.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_d365b.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_d365b
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d365b.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx         CMakeFiles/cmTC_d365b.dir/CheckIncludeFile.c.o  -o cmTC_d365b  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file sys/types.h exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_f1e03/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_f1e03.dir/build.make CMakeFiles/cmTC_f1e03.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f1e03.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_f1e03.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_f1e03
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f1e03.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx         CMakeFiles/cmTC_f1e03.dir/CheckIncludeFile.c.o  -o cmTC_f1e03  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stdint.h exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_bfe3d/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_bfe3d.dir/build.make CMakeFiles/cmTC_bfe3d.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bfe3d.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_bfe3d.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_bfe3d
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bfe3d.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx         CMakeFiles/cmTC_bfe3d.dir/CheckIncludeFile.c.o  -o cmTC_bfe3d  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stddef.h exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_b09a8/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_b09a8.dir/build.make CMakeFiles/cmTC_b09a8.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b09a8.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_b09a8.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_b09a8
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b09a8.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx         CMakeFiles/cmTC_b09a8.dir/CheckIncludeFile.c.o  -o cmTC_b09a8  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining size of unsigned short passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_62a03/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_62a03.dir/build.make CMakeFiles/cmTC_62a03.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_62a03.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_62a03.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CheckTypeSize/CMAKE_SIZEOF_UNSIGNED_SHORT.c
+Linking C executable cmTC_62a03
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_62a03.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx         CMakeFiles/cmTC_62a03.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o  -o cmTC_62a03  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the function fseeko exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_c2322/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_c2322.dir/build.make CMakeFiles/cmTC_c2322.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c2322.dir/CheckFunctionExists.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra  -DCHECK_FUNCTION_EXISTS=fseeko   -o CMakeFiles/cmTC_c2322.dir/CheckFunctionExists.c.o   -c /home/ra000022/a03330/install/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_c2322
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c2322.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx     -DCHECK_FUNCTION_EXISTS=fseeko    CMakeFiles/cmTC_c2322.dir/CheckFunctionExists.c.o  -o cmTC_c2322  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file unistd.h exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_8fa18/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_8fa18.dir/build.make CMakeFiles/cmTC_8fa18.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8fa18.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_8fa18.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_8fa18
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8fa18.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx         CMakeFiles/cmTC_8fa18.dir/CheckIncludeFile.c.o  -o cmTC_8fa18  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED succeeded with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_51791/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_51791.dir/build.make CMakeFiles/cmTC_51791.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_51791.dir/src.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra  -DOpenMP_FLAG_DETECTED -Kopenmp -Xg -pthread -Kfast   -o CMakeFiles/cmTC_51791.dir/src.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_51791
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_51791.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx     -DOpenMP_FLAG_DETECTED -Kopenmp -Xg -pthread -Kfast    CMakeFiles/cmTC_51791.dir/src.c.o  -o cmTC_51791  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED succeeded with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_e5262/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_e5262.dir/build.make CMakeFiles/cmTC_e5262.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_e5262.dir/src.cxx.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/FCCpx    -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra  -DOpenMP_FLAG_DETECTED -Kopenmp -Xg -pthread -Kfast   -o CMakeFiles/cmTC_e5262.dir/src.cxx.o -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_e5262
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e5262.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/FCCpx      -DOpenMP_FLAG_DETECTED -Kopenmp -Xg -pthread -Kfast    CMakeFiles/cmTC_e5262.dir/src.cxx.o  -o cmTC_e5262  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+#include <omp.h>
+int main() {
+#ifdef _OPENMP
+  return 0;
+#else
+  breaks_on_purpose
+#endif
+}
+
+Determining if the include file linux/videodev.h exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_6b276/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_6b276.dir/build.make CMakeFiles/cmTC_6b276.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6b276.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx    -Xg -pthread -Kfast -Kopenmp      -o CMakeFiles/cmTC_6b276.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_6b276
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6b276.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx  -Xg -pthread -Kfast -Kopenmp       CMakeFiles/cmTC_6b276.dir/CheckIncludeFile.c.o  -o cmTC_6b276  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file linux/videodev2.h exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_d2af8/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_d2af8.dir/build.make CMakeFiles/cmTC_d2af8.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d2af8.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx    -Xg -pthread -Kfast -Kopenmp      -o CMakeFiles/cmTC_d2af8.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_d2af8
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d2af8.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx  -Xg -pthread -Kfast -Kopenmp       CMakeFiles/cmTC_d2af8.dir/CheckIncludeFile.c.o  -o cmTC_d2af8  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file linux/videodev.h exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_18ea2/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_18ea2.dir/build.make CMakeFiles/cmTC_18ea2.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_18ea2.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx    -Xg -pthread -Kfast -Kopenmp      -o CMakeFiles/cmTC_18ea2.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_18ea2
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_18ea2.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx  -Xg -pthread -Kfast -Kopenmp       CMakeFiles/cmTC_18ea2.dir/CheckIncludeFile.c.o  -o cmTC_18ea2  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file linux/videodev2.h exists passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_897b2/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_897b2.dir/build.make CMakeFiles/cmTC_897b2.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_897b2.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx    -Xg -pthread -Kfast -Kopenmp      -o CMakeFiles/cmTC_897b2.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_897b2
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_897b2.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx  -Xg -pthread -Kfast -Kopenmp       CMakeFiles/cmTC_897b2.dir/CheckIncludeFile.c.o  -o cmTC_897b2  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+

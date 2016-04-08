@@ -1,0 +1,256 @@
+Determining if the system is big endian passed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_e8ec3/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_e8ec3.dir/build.make CMakeFiles/cmTC_e8ec3.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e8ec3.dir/TestEndianess.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_e8ec3.dir/TestEndianess.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/TestEndianess.c
+Linking C executable cmTC_e8ec3
+/home/ra000022/a03330/install/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e8ec3.dir/link.txt --verbose=1
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx         CMakeFiles/cmTC_e8ec3.dir/TestEndianess.c.o  -o cmTC_e8ec3  
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+
+TestEndianess.c:
+/* A 16 bit integer is required. */
+typedef unsigned short cmakeint16;
+
+/* On a little endian machine, these 16bit ints will give "THIS IS LITTLE ENDIAN."
+   On a big endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_little[] =  {0x4854, 0x5349, 0x4920, 0x2053, 0x494c, 0x5454, 0x454c, 0x4520, 0x444e, 0x4149, 0x2e4e, 0x0000};
+
+/* on a big endian machine, these 16bit ints will give "THIS IS BIG ENDIAN."
+   On a little endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_big[] =     {0x5448, 0x4953, 0x2049, 0x5320, 0x4249, 0x4720, 0x454e, 0x4449, 0x414e, 0x2e2e, 0x0000};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_little[argc];
+  require += info_big[argc];
+  (void)argv;
+  return require;
+}
+
+
+Determining size of off64_t failed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_68487/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_68487.dir/build.make CMakeFiles/cmTC_68487.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_68487.dir/OFF64_T.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_68487.dir/OFF64_T.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CheckTypeSize/OFF64_T.c
+"/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CheckTypeSize/OFF64_T.c", line 19: error: identifier "off64_t" is undefined
+    ('0' + ((SIZE / 10000)%10)),
+             ^
+
+1 error detected in the compilation of "/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CheckTypeSize/OFF64_T.c".
+gmake[1]: *** [CMakeFiles/cmTC_68487.dir/OFF64_T.c.o] Error 2
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+gmake: *** [cmTC_68487/fast] Error 2
+
+/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CheckTypeSize/OFF64_T.c:
+#include <sys/types.h>
+#include <stdint.h>
+#include <stddef.h>
+
+
+#undef KEY
+#if defined(__i386)
+# define KEY '_','_','i','3','8','6'
+#elif defined(__x86_64)
+# define KEY '_','_','x','8','6','_','6','4'
+#elif defined(__ppc__)
+# define KEY '_','_','p','p','c','_','_'
+#elif defined(__ppc64__)
+# define KEY '_','_','p','p','c','6','4','_','_'
+#endif
+
+#define SIZE (sizeof(off64_t))
+char info_size[] =  {'I', 'N', 'F', 'O', ':', 's','i','z','e','[',
+  ('0' + ((SIZE / 10000)%10)),
+  ('0' + ((SIZE / 1000)%10)),
+  ('0' + ((SIZE / 100)%10)),
+  ('0' + ((SIZE / 10)%10)),
+  ('0' +  (SIZE    % 10)),
+  ']',
+#ifdef KEY
+  ' ','k','e','y','[', KEY, ']',
+#endif
+  '\0'};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_size[argc];
+  (void)argv;
+  return require;
+}
+
+
+Determining if the include file linux/videodev.h exists failed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_0ac1c/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_0ac1c.dir/build.make CMakeFiles/cmTC_0ac1c.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0ac1c.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_0ac1c.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 22: warning: explicit type is missing ("int" assumed)
+  typedef __signed__ char __s8;
+          ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 22: error: expected a ";"
+  typedef __signed__ char __s8;
+                     ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 25: error: invalid combination of type specifiers
+  typedef __signed__ short __s16;
+  ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 28: error: invalid combination of type specifiers
+  typedef __signed__ int __s32;
+                     ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 31: error: invalid combination of type specifiers
+  typedef __signed__ long __s64;
+  ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/videodev2.h", line 372: warning: expected an identifier
+  	};
+  	 ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/videodev2.h", line 405: warning: expected an identifier
+  	};
+  	 ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/videodev2.h", line 776: warning: expected an identifier
+  	};
+  	 ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/videodev2.h", line 1180: warning: expected an identifier
+  	};
+  	 ^
+
+4 errors detected in the compilation of "/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c".
+gmake[1]: *** [CMakeFiles/cmTC_0ac1c.dir/CheckIncludeFile.c.o] Error 2
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+gmake: *** [cmTC_0ac1c/fast] Error 2
+
+
+Determining if the include file linux/videodev2.h exists failed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_28b29/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_28b29.dir/build.make CMakeFiles/cmTC_28b29.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_28b29.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_28b29.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 22: warning: explicit type is missing ("int" assumed)
+  typedef __signed__ char __s8;
+          ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 22: error: expected a ";"
+  typedef __signed__ char __s8;
+                     ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 25: error: invalid combination of type specifiers
+  typedef __signed__ short __s16;
+  ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 28: error: invalid combination of type specifiers
+  typedef __signed__ int __s32;
+                     ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/types.h", line 31: error: invalid combination of type specifiers
+  typedef __signed__ long __s64;
+  ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/videodev2.h", line 372: warning: expected an identifier
+  	};
+  	 ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/videodev2.h", line 405: warning: expected an identifier
+  	};
+  	 ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/videodev2.h", line 776: warning: expected an identifier
+  	};
+  	 ^
+
+"/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/videodev2.h", line 1180: warning: expected an identifier
+  	};
+  	 ^
+
+4 errors detected in the compilation of "/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c".
+gmake[1]: *** [CMakeFiles/cmTC_28b29.dir/CheckIncludeFile.c.o] Error 2
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+gmake: *** [cmTC_28b29/fast] Error 2
+
+
+Determining if the include file sys/videoio.h exists failed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_c4d13/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_c4d13.dir/build.make CMakeFiles/cmTC_c4d13.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c4d13.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx   -I/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp//include/extra   -o CMakeFiles/cmTC_c4d13.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+"/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c", line 1: catastrophic error: cannot open source file "sys/videoio.h"
+  #include <sys/videoio.h>
+                          ^
+
+1 catastrophic error detected in the compilation of "/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c".
+Compilation terminated.
+gmake[1]: *** [CMakeFiles/cmTC_c4d13.dir/CheckIncludeFile.c.o] Error 4
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+gmake: *** [cmTC_c4d13/fast] Error 2
+
+
+Determining if the include file sys/videoio.h exists failed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_21594/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_21594.dir/build.make CMakeFiles/cmTC_21594.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_21594.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx    -Xg -pthread -Kfast -Kopenmp      -o CMakeFiles/cmTC_21594.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+"/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c", line 1: catastrophic error: cannot open source file "sys/videoio.h"
+  #include <sys/videoio.h>
+                          ^
+
+1 catastrophic error detected in the compilation of "/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c".
+Compilation terminated.
+gmake[1]: *** [CMakeFiles/cmTC_21594.dir/CheckIncludeFile.c.o] Error 4
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+gmake: *** [cmTC_21594/fast] Error 2
+
+
+Determining if the include file sys/videoio.h exists failed with the following output:
+Change Dir: /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_64031/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_64031.dir/build.make CMakeFiles/cmTC_64031.dir/build
+gmake[1]: Entering directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_64031.dir/CheckIncludeFile.c.o
+/opt/FJSVtclang/GM-1.2.0-19/bin/fccpx    -Xg -pthread -Kfast -Kopenmp      -o CMakeFiles/cmTC_64031.dir/CheckIncludeFile.c.o   -c /home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+"/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c", line 1: catastrophic error: cannot open source file "sys/videoio.h"
+  #include <sys/videoio.h>
+                          ^
+
+1 catastrophic error detected in the compilation of "/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp/CheckIncludeFile.c".
+Compilation terminated.
+gmake[1]: *** [CMakeFiles/cmTC_64031.dir/CheckIncludeFile.c.o] Error 4
+gmake[1]: Leaving directory `/volume2/home/ra000022/a03330/opencv-2.4.12/cmake/CMakeFiles/CMakeTmp'
+gmake: *** [cmTC_64031/fast] Error 2
+
+
