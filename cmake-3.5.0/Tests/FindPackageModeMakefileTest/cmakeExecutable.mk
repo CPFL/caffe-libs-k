@@ -1,0 +1,1 @@
+CMAKE = "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake"
