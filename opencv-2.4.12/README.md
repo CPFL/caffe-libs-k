@@ -14,3 +14,5 @@ $ make
 ```
 
 Extra files added for SPARC can be found inside `include/extra` and in `modules/core/include/opencv2/core/operations.hpp:58`
+
+cross compilation script can be found in `platforms/fujitsu/fujitsu.cmake`
