@@ -522,6 +522,7 @@ class Map {
     typedef ptrdiff_t difference_type;
 
     MapAllocator() : arena_(NULL) {}
+    //Operator=(MapAllocator<X>& allocator) : arena_(arena) {}
     explicit MapAllocator(Arena* arena) : arena_(arena) {}
     template <typename X>
     MapAllocator(const MapAllocator<X>& allocator)
@@ -589,7 +590,8 @@ class Map {
 
    private:
     typedef void DestructorSkippable_;
-    Arena* const arena_;
+    //Arena* const arena_;
+    Arena* arena_;
 
     template <typename X>
     friend class MapAllocator;
