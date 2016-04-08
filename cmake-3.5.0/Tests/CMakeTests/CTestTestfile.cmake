@@ -1,0 +1,38 @@
+# CMake generated Testfile for 
+# Source directory: /home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests
+# Build directory: /home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(CMake.List "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/ListTest.cmake")
+add_test(CMake.VariableWatch "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/VariableWatchTest.cmake")
+add_test(CMake.Include "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/IncludeTest.cmake")
+add_test(CMake.FindBase "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/FindBaseTest.cmake")
+add_test(CMake.Toolchain "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/ToolchainTest.cmake")
+add_test(CMake.GetFilenameComponentRealpath "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/GetFilenameComponentRealpathTest.cmake")
+add_test(CMake.Version "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/VersionTest.cmake")
+add_test(CMake.Message "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/MessageTest.cmake")
+add_test(CMake.File "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/FileTest.cmake")
+add_test(CMake.SeparateArguments "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/SeparateArgumentsTest.cmake")
+add_test(CMake.ImplicitLinkInfo "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/ImplicitLinkInfoTest.cmake")
+add_test(CMake.ModuleNotices "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/ModuleNoticesTest.cmake")
+add_test(CMake.GetProperty "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/GetPropertyTest.cmake")
+add_test(CMake.If "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/IfTest.cmake")
+add_test(CMake.String "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/StringTest.cmake")
+add_test(CMake.Math "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/MathTest.cmake")
+add_test(CMake.CMakeMinimumRequired "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/CMakeMinimumRequiredTest.cmake")
+add_test(CMake.CompilerIdVendor "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/CompilerIdVendorTest.cmake")
+add_test(CMake.ProcessorCount "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-DKWSYS_TEST_EXE=/home/ra000022/a03330/caffe/cmake-3.5.0/Source/kwsys/cmsysTestsCxx" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/ProcessorCountTest.cmake")
+add_test(CMake.PushCheckState "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/PushCheckStateTest.cmake")
+add_test(CMake.While "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/WhileTest.cmake")
+add_test(CMake.CMakeHostSystemInformation "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/CMakeHostSystemInformationTest.cmake")
+add_test(CMake.FileDownload "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/FileDownloadTest.cmake")
+set_tests_properties(CMake.FileDownload PROPERTIES  PASS_REGULAR_EXPRESSION "file already exists with expected MD5 sum")
+add_test(CMake.FileDownloadBadHash "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/FileDownloadBadHashTest.cmake")
+set_tests_properties(CMake.FileDownloadBadHash PROPERTIES  WILL_FAIL "TRUE")
+add_test(CMake.FileUpload "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/FileUploadTest.cmake")
+add_test(CMake.ELF "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/ELFTest.cmake")
+add_test(CMake.EndStuff "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-Ddir:STRING=/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/EndStuffTest" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/EndStuffTest.cmake")
+add_test(CMake.GetPrerequisites "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-DCTEST_CONFIGURATION_TYPE:STRING=\${CTEST_CONFIGURATION_TYPE}" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/GetPrerequisitesTest.cmake")
+add_test(CMake.PolicyCheck "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-DCMake_BINARY_DIR:PATH=/home/ra000022/a03330/caffe/cmake-3.5.0" "-DCMake_SOURCE_DIR:PATH=/home/ra000022/a03330/caffe/cmake-3.5.0" "-DGIT_EXECUTABLE:STRING=/usr/bin/git" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/PolicyCheckTest.cmake")
+add_test(CMake.CheckSourceTree "/home/ra000022/a03330/caffe/cmake-3.5.0/bin/cmake" "-DCMake_BINARY_DIR:PATH=/home/ra000022/a03330/caffe/cmake-3.5.0" "-DCMake_SOURCE_DIR:PATH=/home/ra000022/a03330/caffe/cmake-3.5.0" "-DGIT_EXECUTABLE:STRING=/usr/bin/git" "-DHOME:STRING=/home/ra000022/a03330" "-P" "/home/ra000022/a03330/caffe/cmake-3.5.0/Tests/CMakeTests/CheckSourceTreeTest.cmake")
