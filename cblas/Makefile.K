@@ -1,5 +1,5 @@
 #
-# Makefile.LINUX
+# Makefile.K
 #
 #
 # If you compile, change the name to Makefile.in.
@@ -16,22 +16,22 @@ SHELL = /bin/sh
 # Platform
 #-----------------------------------------------------------------------------
 
-PLAT = LINUX
+PLAT = K
 
 #-----------------------------------------------------------------------------
-# Libraries and includes
+# Libraries and includs
 #-----------------------------------------------------------------------------
  
-BLLIB = /Users/julie/Documents/Boulot/lapack-dev/lapack/trunk/blas_LINUX.a
+BLLIB = -SSL2
 CBLIB = ../lib/cblas_$(PLAT).a
 
 #-----------------------------------------------------------------------------
 # Compilers
 #-----------------------------------------------------------------------------
 
-CC = gcc
-FC = gfortran
-LOADER = $(FC)
+CC = fccpx
+FC = frtpx
+LOADER = $(CC)
 
 #-----------------------------------------------------------------------------
 # Flags for Compilers
@@ -45,5 +45,5 @@ FFLAGS = -O3
 #-----------------------------------------------------------------------------
 
 ARCH = ar
-ARCHFLAGS = cr
-RANLIB = ranlib
+ARCHFLAGS = r
+RANLIB = echo
