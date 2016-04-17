@@ -1,0 +1,46 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/src/caffe/layers/dropout_layer.cpp fast-rcnn/caffe-fast-rcnn/src/caffe/layers/dropout_layer.cpp
+--- fast-rcnn-/caffe-fast-rcnn/src/caffe/layers/dropout_layer.cpp	2016-01-15 11:22:35.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/src/caffe/layers/dropout_layer.cpp	2016-01-15 11:24:34.000000000 +0900
+@@ -40,6 +40,9 @@
+   if (this->phase_ == TRAIN) {
+     // Create random numbers
+     caffe_rng_bernoulli(count, 1. - threshold_, mask);
++#ifdef _OPENMP
++#pragma omp parallel for
++#endif
+     for (int i = 0; i < count; ++i) {
+       top_data[i] = bottom_data[i] * mask[i] * scale_;
+     }
+@@ -58,6 +61,9 @@
+     if (this->phase_ == TRAIN) {
+       const unsigned int* mask = rand_vec_.cpu_data();
+       const int count = bottom[0]->count();
++#ifdef _OPENMP
++#pragma omp parallel for
++#endif
+       for (int i = 0; i < count; ++i) {
+         bottom_diff[i] = top_diff[i] * mask[i] * scale_;
+       }
+diff -ur fast-rcnn-/caffe-fast-rcnn/src/caffe/layers/relu_layer.cpp fast-rcnn/caffe-fast-rcnn/src/caffe/layers/relu_layer.cpp
+--- fast-rcnn-/caffe-fast-rcnn/src/caffe/layers/relu_layer.cpp	2016-01-15 11:22:35.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/src/caffe/layers/relu_layer.cpp	2016-01-15 11:24:34.000000000 +0900
+@@ -13,6 +13,9 @@
+   Dtype* top_data = top[0]->mutable_cpu_data();
+   const int count = bottom[0]->count();
+   Dtype negative_slope = this->layer_param_.relu_param().negative_slope();
++#ifdef _OPENMP
++#pragma omp parallel for
++#endif
+   for (int i = 0; i < count; ++i) {
+     top_data[i] = std::max(bottom_data[i], Dtype(0))
+         + negative_slope * std::min(bottom_data[i], Dtype(0));
+@@ -29,6 +32,9 @@
+     Dtype* bottom_diff = bottom[0]->mutable_cpu_diff();
+     const int count = bottom[0]->count();
+     Dtype negative_slope = this->layer_param_.relu_param().negative_slope();
++#ifdef _OPENMP
++#pragma omp parallel for
++#endif
+     for (int i = 0; i < count; ++i) {
+       bottom_diff[i] = top_diff[i] * ((bottom_data[i] > 0)
+           + negative_slope * (bottom_data[i] <= 0));

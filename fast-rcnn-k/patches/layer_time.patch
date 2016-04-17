@@ -1,0 +1,581 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/src/caffe/net.cpp fast-rcnn/caffe-fast-rcnn/src/caffe/net.cpp
+--- fast-rcnn-/caffe-fast-rcnn/src/caffe/net.cpp	2016-01-28 20:42:13.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/src/caffe/net.cpp	2016-02-26 16:24:58.875372094 +0900
+@@ -16,8 +16,59 @@
+ 
+ #include "caffe/test/test_caffe_main.hpp"
+ 
++#include <sys/time.h>
++
+ namespace caffe {
+ 
++#ifdef __INTEL_COMPILER
++extern "C" {
++#endif
++
++struct timeval rsp_sum[100], fwd_sum[100], bak_sum[100], bls_sum[100], 
++  *sums[5] = { rsp_sum, fwd_sum, bls_sum, bak_sum, bls_sum },
++  rfBbB[5][100][200];
++int my_iter = 0;
++extern struct timeval blas_sum;
++
++#ifdef USE_CUDNN
++extern struct timeval blas_sum_gpu;
++#define BLAS_SUM	(Caffe::mode() == Caffe::CPU ? blas_sum : blas_sum_gpu)
++#else
++#define BLAS_SUM	blas_sum
++#endif
++
++#ifdef __INTEL_COMPILER
++}
++#endif
++
++static void
++timeval_norm(struct timeval *p)
++{
++	while(p->tv_usec < 0){
++		p->tv_sec--;
++		p->tv_usec += 1000000;
++	}
++	while(p->tv_usec >= 1000000){
++		p->tv_sec++;
++		p->tv_usec -= 1000000;
++	}
++}
++
++static void
++timeval_sub_sum(struct timeval *start, struct timeval *stop, int layer_id, int rfBbB_id)
++{
++	struct timeval *sum = &sums[ rfBbB_id ][ layer_id ],
++	  *t = &rfBbB[ rfBbB_id ][ layer_id ][ my_iter ];
++
++	t->tv_usec = stop->tv_usec - start->tv_usec;
++	t->tv_sec = stop->tv_sec - start->tv_sec;
++	timeval_norm(t);
++
++	sum->tv_usec += t->tv_usec;
++	sum->tv_sec += t->tv_sec;
++	timeval_norm(sum);
++}
++
+ template <typename Dtype>
+ Net<Dtype>::Net(const NetParameter& param) {
+   Init(param);
+@@ -469,9 +520,25 @@
+     }
+   }
+   for (int i = start; i <= end; ++i) {
++    struct timeval start, stop, bls_start, bls_stop;
++
+     // LOG(ERROR) << "Forwarding " << layer_names_[i];
++
++    bls_start = BLAS_SUM;
++
++    gettimeofday(&start, NULL);
+     layers_[i]->Reshape(bottom_vecs_[i], top_vecs_[i]);
++    gettimeofday(&stop, NULL);
++    timeval_sub_sum(&start, &stop, i, 0);
++
++    gettimeofday(&start, NULL);
+     Dtype layer_loss = layers_[i]->Forward(bottom_vecs_[i], top_vecs_[i]);
++    gettimeofday(&stop, NULL);
++    timeval_sub_sum(&start, &stop, i, 1);
++
++    bls_stop = BLAS_SUM;;
++    timeval_sub_sum(&bls_start, &bls_stop, i, 2);
++
+     loss += layer_loss;
+     if (debug_info_) { ForwardDebugInfo(i); }
+   }
+@@ -535,11 +602,23 @@
+   CHECK_LT(start, layers_.size());
+   for (int i = start; i >= end; --i) {
+     if (layer_need_backward_[i]) {
++      struct timeval start, stop, bls_start, bls_stop;
++
++      bls_start = BLAS_SUM;;
++
++      gettimeofday(&start, NULL);
+       layers_[i]->Backward(
+           top_vecs_[i], bottom_need_backward_[i], bottom_vecs_[i]);
++      gettimeofday(&stop, NULL);
++      timeval_sub_sum(&start, &stop, i, 3);
++
++      bls_stop = BLAS_SUM;;
++      timeval_sub_sum(&bls_start, &bls_stop, i, 4);
++
+       if (debug_info_) { BackwardDebugInfo(i); }
+     }
+   }
++  my_iter++;
+ }
+ 
+ template <typename Dtype>
+diff -ur fast-rcnn-/caffe-fast-rcnn/src/caffe/solver.cpp fast-rcnn/caffe-fast-rcnn/src/caffe/solver.cpp
+--- fast-rcnn-/caffe-fast-rcnn/src/caffe/solver.cpp	2016-01-28 20:42:13.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/src/caffe/solver.cpp	2016-02-26 16:37:01.487360858 +0900
+@@ -206,6 +206,48 @@
+               << result_vec[k] << loss_msg_stream.str();
+         }
+       }
++#if 1
++      if (iter_ >= 100) {
++        extern struct timeval rsp_sum[100], fwd_sum[100], bak_sum[100], bls_sum[100],
++	  rfBbB[5][100][200];
++        int i, n = net_->layers().size();
++
++        for(i=0; i<n; i++){
++          char buf[1024];
++          timeval sum;
++
++          sum.tv_sec = rsp_sum[i].tv_sec + fwd_sum[i].tv_sec + bak_sum[i].tv_sec;
++          sum.tv_usec = rsp_sum[i].tv_usec + fwd_sum[i].tv_usec + bak_sum[i].tv_usec;
++          while(sum.tv_usec >= 1000000){
++            sum.tv_sec++;
++            sum.tv_usec -= 1000000;
++          }
++          sprintf(buf, "%d %s : rsp=%d.%06d fwd=%d.%06d bak=%d.%06d sum=%d.%06d bls=%d.%06d",
++                  i, net_->layer_names()[i].c_str(),
++                  (int)rsp_sum[i].tv_sec, (int)rsp_sum[i].tv_usec,
++                  (int)fwd_sum[i].tv_sec, (int)fwd_sum[i].tv_usec,
++                  (int)bak_sum[i].tv_sec, (int)bak_sum[i].tv_usec,
++                  (int)sum.tv_sec, (int)sum.tv_usec,
++                  (int)bls_sum[i].tv_sec, (int)bls_sum[i].tv_usec );
++          LOG(INFO) << buf;
++        }
++
++        for(i=0; i<n; i++){
++          char buf[1024];
++	  sprintf(buf, "%d (%s)----", i, net_->layer_names()[i].c_str());
++	  //LOG(INFO) << buf;
++	  int it;
++	  for(it=0; it<iter_; it++){
++	    sprintf(buf, " it=%d %d.%06d %d.%06d %d.%06d %d.%06d", it,
++		    (int)rfBbB[1][i][it].tv_sec, (int)rfBbB[1][i][it].tv_usec,
++		    (int)rfBbB[2][i][it].tv_sec, (int)rfBbB[2][i][it].tv_usec,
++		    (int)rfBbB[3][i][it].tv_sec, (int)rfBbB[3][i][it].tv_usec,
++		    (int)rfBbB[4][i][it].tv_sec, (int)rfBbB[4][i][it].tv_usec);
++	    //LOG(INFO) << buf;
++	  }
++	}
++      }
++#endif
+     }
+     ComputeUpdateValue();
+     net_->Update();
+diff -ur fast-rcnn-/caffe-fast-rcnn/src/caffe/util/math_functions.cpp fast-rcnn/caffe-fast-rcnn/src/caffe/util/math_functions.cpp
+--- fast-rcnn-/caffe-fast-rcnn/src/caffe/util/math_functions.cpp	2016-01-28 20:42:13.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/src/caffe/util/math_functions.cpp	2016-02-26 15:12:29.415439719 +0900
+@@ -7,8 +7,36 @@
+ #include "caffe/util/math_functions.hpp"
+ #include "caffe/util/rng.hpp"
+ 
++#include <sys/time.h>
++
+ namespace caffe {
+ 
++#ifdef __INTEL_COMPILER
++extern "C" {
++#endif
++
++struct timeval blas_sum = { 0, 0 };
++
++#ifdef __INTEL_COMPILER
++}
++#endif
++
++static void
++timeval_sub_sum(struct timeval *start, struct timeval *stop, struct timeval *sum)
++{
++  sum->tv_usec += stop->tv_usec - start->tv_usec;
++  sum->tv_sec += stop->tv_sec - start->tv_sec;
++
++  while(sum->tv_usec < 0){
++    sum->tv_sec--;
++    sum->tv_usec += 1000000;
++  }
++  while(sum->tv_usec >= 1000000){
++    sum->tv_sec++;
++    sum->tv_usec -= 1000000;
++  }
++}
++
+ template<>
+ void caffe_cpu_gemm<float>(const CBLAS_TRANSPOSE TransA,
+     const CBLAS_TRANSPOSE TransB, const int M, const int N, const int K,
+@@ -16,8 +44,12 @@
+     float* C) {
+   int lda = (TransA == CblasNoTrans) ? K : M;
+   int ldb = (TransB == CblasNoTrans) ? N : K;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_sgemm(CblasRowMajor, TransA, TransB, M, N, K, alpha, A, lda, B,
+       ldb, beta, C, N);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ template<>
+@@ -27,31 +59,55 @@
+     double* C) {
+   int lda = (TransA == CblasNoTrans) ? K : M;
+   int ldb = (TransB == CblasNoTrans) ? N : K;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_dgemm(CblasRowMajor, TransA, TransB, M, N, K, alpha, A, lda, B,
+       ldb, beta, C, N);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ template <>
+ void caffe_cpu_gemv<float>(const CBLAS_TRANSPOSE TransA, const int M,
+     const int N, const float alpha, const float* A, const float* x,
+     const float beta, float* y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_sgemv(CblasRowMajor, TransA, M, N, alpha, A, N, x, 1, beta, y, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ template <>
+ void caffe_cpu_gemv<double>(const CBLAS_TRANSPOSE TransA, const int M,
+     const int N, const double alpha, const double* A, const double* x,
+     const double beta, double* y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_dgemv(CblasRowMajor, TransA, M, N, alpha, A, N, x, 1, beta, y, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ template <>
+ void caffe_axpy<float>(const int N, const float alpha, const float* X,
+-    float* Y) { cblas_saxpy(N, alpha, X, 1, Y, 1); }
++    float* Y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
++  cblas_saxpy(N, alpha, X, 1, Y, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
++}
+ 
+ template <>
+ void caffe_axpy<double>(const int N, const double alpha, const double* X,
+-    double* Y) { cblas_daxpy(N, alpha, X, 1, Y, 1); }
++    double* Y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
++  cblas_daxpy(N, alpha, X, 1, Y, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
++}
+ 
+ template <typename Dtype>
+ void caffe_set(const int N, const Dtype alpha, Dtype* Y) {
+@@ -106,24 +162,40 @@
+ 
+ template <>
+ void caffe_scal<float>(const int N, const float alpha, float *X) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_sscal(N, alpha, X, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ template <>
+ void caffe_scal<double>(const int N, const double alpha, double *X) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_dscal(N, alpha, X, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ template <>
+ void caffe_cpu_axpby<float>(const int N, const float alpha, const float* X,
+                             const float beta, float* Y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_saxpby(N, alpha, X, 1, beta, Y, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ template <>
+ void caffe_cpu_axpby<double>(const int N, const double alpha, const double* X,
+                              const double beta, double* Y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_daxpby(N, alpha, X, 1, beta, Y, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ template <>
+@@ -318,13 +390,25 @@
+ template <>
+ float caffe_cpu_strided_dot<float>(const int n, const float* x, const int incx,
+     const float* y, const int incy) {
+-  return cblas_sdot(n, x, incx, y, incy);
++  float ret;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
++  ret = cblas_sdot(n, x, incx, y, incy);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
++  return ret;
+ }
+ 
+ template <>
+ double caffe_cpu_strided_dot<double>(const int n, const double* x,
+     const int incx, const double* y, const int incy) {
+-  return cblas_ddot(n, x, incx, y, incy);
++  double ret;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
++  ret = cblas_ddot(n, x, incx, y, incy);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
++  return ret;
+ }
+ 
+ template <typename Dtype>
+@@ -362,26 +446,46 @@
+ 
+ template <>
+ float caffe_cpu_asum<float>(const int n, const float* x) {
+-  return cblas_sasum(n, x, 1);
++  float ret;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
++  ret = cblas_sasum(n, x, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
++  return ret;
+ }
+ 
+ template <>
+ double caffe_cpu_asum<double>(const int n, const double* x) {
+-  return cblas_dasum(n, x, 1);
++  double ret;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
++  ret = cblas_dasum(n, x, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
++  return ret;
+ }
+ 
+ template <>
+ void caffe_cpu_scale<float>(const int n, const float alpha, const float *x,
+                             float* y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_scopy(n, x, 1, y, 1);
+   cblas_sscal(n, alpha, y, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ template <>
+ void caffe_cpu_scale<double>(const int n, const double alpha, const double *x,
+                              double* y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   cblas_dcopy(n, x, 1, y, 1);
+   cblas_dscal(n, alpha, y, 1);
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum);
+ }
+ 
+ }  // namespace caffe
+diff -ur fast-rcnn-/caffe-fast-rcnn/src/caffe/util/math_functions.cu fast-rcnn/caffe-fast-rcnn/src/caffe/util/math_functions.cu
+--- fast-rcnn-/caffe-fast-rcnn/src/caffe/util/math_functions.cu	2016-01-28 20:42:13.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/src/caffe/util/math_functions.cu	2016-02-26 15:12:29.415439719 +0900
+@@ -10,8 +10,28 @@
+ #include "caffe/common.hpp"
+ #include "caffe/util/math_functions.hpp"
+ 
++#include <sys/time.h>
++
+ namespace caffe {
+ 
++struct timeval blas_sum_gpu = { 0, 0 };
++
++static void
++timeval_sub_sum(struct timeval *start, struct timeval *stop, struct timeval *sum)
++{
++  sum->tv_usec += stop->tv_usec - start->tv_usec;
++  sum->tv_sec += stop->tv_sec - start->tv_sec;
++
++  while(sum->tv_usec < 0){
++    sum->tv_sec--;
++    sum->tv_usec += 1000000;
++  }
++  while(sum->tv_usec >= 1000000){
++    sum->tv_sec++;
++    sum->tv_usec -= 1000000;
++  }
++}
++
+ template <>
+ void caffe_gpu_gemm<float>(const CBLAS_TRANSPOSE TransA,
+     const CBLAS_TRANSPOSE TransB, const int M, const int N, const int K,
+@@ -24,8 +44,12 @@
+       (TransA == CblasNoTrans) ? CUBLAS_OP_N : CUBLAS_OP_T;
+   cublasOperation_t cuTransB =
+       (TransB == CblasNoTrans) ? CUBLAS_OP_N : CUBLAS_OP_T;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasSgemm(Caffe::cublas_handle(), cuTransB, cuTransA,
+       N, M, K, &alpha, B, ldb, A, lda, &beta, C, N));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+@@ -40,8 +64,12 @@
+       (TransA == CblasNoTrans) ? CUBLAS_OP_N : CUBLAS_OP_T;
+   cublasOperation_t cuTransB =
+       (TransB == CblasNoTrans) ? CUBLAS_OP_N : CUBLAS_OP_T;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasDgemm(Caffe::cublas_handle(), cuTransB, cuTransA,
+       N, M, K, &alpha, B, ldb, A, lda, &beta, C, N));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+@@ -50,8 +78,12 @@
+     const float beta, float* y) {
+   cublasOperation_t cuTransA =
+       (TransA == CblasNoTrans) ? CUBLAS_OP_T : CUBLAS_OP_N;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasSgemv(Caffe::cublas_handle(), cuTransA, N, M, &alpha,
+       A, N, x, 1, &beta, y, 1));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+@@ -60,20 +92,32 @@
+     const double beta, double* y) {
+   cublasOperation_t cuTransA =
+       (TransA == CblasNoTrans) ? CUBLAS_OP_T : CUBLAS_OP_N;
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasDgemv(Caffe::cublas_handle(), cuTransA, N, M, &alpha,
+       A, N, x, 1, &beta, y, 1));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+ void caffe_gpu_axpy<float>(const int N, const float alpha, const float* X,
+     float* Y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasSaxpy(Caffe::cublas_handle(), N, &alpha, X, 1, Y, 1));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+ void caffe_gpu_axpy<double>(const int N, const double alpha, const double* X,
+     double* Y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasDaxpy(Caffe::cublas_handle(), N, &alpha, X, 1, Y, 1));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ void caffe_gpu_memcpy(const size_t N, const void* X, void* Y) {
+@@ -84,12 +128,20 @@
+ 
+ template <>
+ void caffe_gpu_scal<float>(const int N, const float alpha, float *X) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasSscal(Caffe::cublas_handle(), N, &alpha, X, 1));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+ void caffe_gpu_scal<double>(const int N, const double alpha, double *X) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasDscal(Caffe::cublas_handle(), N, &alpha, X, 1));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+@@ -109,37 +161,61 @@
+ template <>
+ void caffe_gpu_dot<float>(const int n, const float* x, const float* y,
+     float* out) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasSdot(Caffe::cublas_handle(), n, x, 1, y, 1, out));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+ void caffe_gpu_dot<double>(const int n, const double* x, const double* y,
+     double * out) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasDdot(Caffe::cublas_handle(), n, x, 1, y, 1, out));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+ void caffe_gpu_asum<float>(const int n, const float* x, float* y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasSasum(Caffe::cublas_handle(), n, x, 1, y));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+ void caffe_gpu_asum<double>(const int n, const double* x, double* y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasDasum(Caffe::cublas_handle(), n, x, 1, y));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+ void caffe_gpu_scale<float>(const int n, const float alpha, const float *x,
+                             float* y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasScopy(Caffe::cublas_handle(), n, x, 1, y, 1));
+   CUBLAS_CHECK(cublasSscal(Caffe::cublas_handle(), n, &alpha, y, 1));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <>
+ void caffe_gpu_scale<double>(const int n, const double alpha, const double *x,
+                              double* y) {
++  struct timeval start, stop;
++  gettimeofday(&start, NULL);
+   CUBLAS_CHECK(cublasDcopy(Caffe::cublas_handle(), n, x, 1, y, 1));
+   CUBLAS_CHECK(cublasDscal(Caffe::cublas_handle(), n, &alpha, y, 1));
++  gettimeofday(&stop, NULL);
++  timeval_sub_sum(&start, &stop, &blas_sum_gpu);
+ }
+ 
+ template <typename Dtype>

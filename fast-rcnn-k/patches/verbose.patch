@@ -1,0 +1,9 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/Makefile.config fast-rcnn/caffe-fast-rcnn/Makefile.config
+--- fast-rcnn-/caffe-fast-rcnn/Makefile.config	2016-01-28 20:42:15.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/Makefile.config	2016-02-08 18:50:54.000000000 +0900
+@@ -96,4 +96,4 @@
+ TEST_GPUID := 0
+ 
+ # enable pretty build (comment to see full commands)
+-Q ?= @
++#Q ?= @

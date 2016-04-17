@@ -1,0 +1,103 @@
+libglog_la-demangle.lo: src/demangle.cc \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../lib/FCC.pre \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdio.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_prolog.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/features.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/features.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/cdefs.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/wordsize.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs-64.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_stlport_version.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl_user_config.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_site_config.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stlcomp.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_fujitsu.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_confix.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/stdio.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stddef.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stddef.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/types.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/typesizes.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/libio.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/_G_config.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/wchar.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/wchar.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdarg.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stdarg.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/stdio_lim.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/sys_errlist.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_epilog.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat_post.h \
+  src/demangle.h \
+  src/config.h
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../lib/FCC.pre:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdio.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_prolog.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/features.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/features.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/cdefs.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/wordsize.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs-64.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_stlport_version.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl_user_config.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_site_config.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stlcomp.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_fujitsu.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_confix.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/stdio.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stddef.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stddef.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/types.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/typesizes.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/libio.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/_G_config.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/wchar.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/wchar.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdarg.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stdarg.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/stdio_lim.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/sys_errlist.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_epilog.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat_post.h:
+
+src/demangle.h:
+
+src/config.h:

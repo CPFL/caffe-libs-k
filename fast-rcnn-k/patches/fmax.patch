@@ -1,0 +1,35 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/src/caffe/layers/relu_layer.cpp fast-rcnn/caffe-fast-rcnn/src/caffe/layers/relu_layer.cpp
+--- fast-rcnn-/caffe-fast-rcnn/src/caffe/layers/relu_layer.cpp	2016-03-08 20:44:12.500353455 +0900
++++ fast-rcnn/caffe-fast-rcnn/src/caffe/layers/relu_layer.cpp	2016-03-08 20:45:18.100352435 +0900
+@@ -17,8 +17,8 @@
+ #pragma omp parallel for
+ #endif
+   for (int i = 0; i < count; ++i) {
+-    top_data[i] = std::max(bottom_data[i], Dtype(0))
+-        + negative_slope * std::min(bottom_data[i], Dtype(0));
++    top_data[i] = fmax(bottom_data[i], Dtype(0))
++        + negative_slope * fmin(bottom_data[i], Dtype(0));
+   }
+ }
+ 
+Only in fast-rcnn/caffe-fast-rcnn/src/caffe/layers: relu_layer.cpp~
+diff -ur fast-rcnn-/caffe-fast-rcnn/src/caffe/layers/roi_pooling_layer.cpp fast-rcnn/caffe-fast-rcnn/src/caffe/layers/roi_pooling_layer.cpp
+--- fast-rcnn-/caffe-fast-rcnn/src/caffe/layers/roi_pooling_layer.cpp	2016-03-08 20:44:04.852353574 +0900
++++ fast-rcnn/caffe-fast-rcnn/src/caffe/layers/roi_pooling_layer.cpp	2016-03-08 20:45:03.348352665 +0900
+@@ -9,10 +9,15 @@
+ 
+ #include "caffe/fast_rcnn_layers.hpp"
+ 
++#if 0
++#define max fmax
++#define min fmin
++#else
+ using std::max;
+ using std::min;
+ using std::floor;
+ using std::ceil;
++#endif
+ 
+ namespace caffe {
+ 
+Only in fast-rcnn/caffe-fast-rcnn/src/caffe/layers: roi_pooling_layer.cpp~

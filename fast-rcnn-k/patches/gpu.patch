@@ -1,0 +1,16 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/Makefile.config fast-rcnn/caffe-fast-rcnn/Makefile.config
+--- fast-rcnn-/caffe-fast-rcnn/Makefile.config	2016-01-28 20:42:15.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/Makefile.config	2016-02-01 16:40:19.064941447 +0900
+@@ -2,10 +2,10 @@
+ # Contributions simplifying and improving our build system are welcome!
+ 
+ # cuDNN acceleration switch (uncomment to build with cuDNN).
+-#USE_CUDNN := 1
++USE_CUDNN := 1
+ 
+ # CPU-only switch (uncomment to build without GPU support).
+-CPU_ONLY := 1
++# CPU_ONLY := 1
+ 
+ # uncomment to disable IO dependencies and corresponding data layers
+ # USE_LEVELDB := 0

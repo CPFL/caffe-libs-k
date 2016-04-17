@@ -1,0 +1,19 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/Makefile fast-rcnn/caffe-fast-rcnn/Makefile
+--- fast-rcnn-/caffe-fast-rcnn/Makefile	2016-01-15 11:22:34.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/Makefile	2016-01-15 11:30:53.000000000 +0900
+@@ -354,6 +354,15 @@
+ endif
+ LDFLAGS += $(foreach librarydir,$(LIBRARY_DIRS),-L$(librarydir)) $(PKG_CONFIG) \
+ 		$(foreach library,$(LIBRARIES),-l$(library))
++ifdef OPENMP
++ifneq (,$(findstring icpc,$(CXX)))
++	OMP_OPT = -openmp
++else
++	OMP_OPT = -fopenmp
++endif
++CXXFLAGS += $(OMP_OPT)
++LDFLAGS += $(OMP_OPT)
++endif
+ PYTHON_LDFLAGS := $(LDFLAGS) $(foreach library,$(PYTHON_LIBRARIES),-l$(library))
+ 
+ # 'superclean' target recursively* deletes all files ending with an extension

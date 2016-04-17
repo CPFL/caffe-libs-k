@@ -1,0 +1,65 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/src/caffe/net.cpp fast-rcnn/caffe-fast-rcnn/src/caffe/net.cpp
+--- fast-rcnn-/caffe-fast-rcnn/src/caffe/net.cpp	2016-03-04 21:45:38.325669534 +0900
++++ fast-rcnn/caffe-fast-rcnn/src/caffe/net.cpp	2016-03-08 11:02:20.064896273 +0900
+@@ -541,6 +541,20 @@
+ 
+     loss += layer_loss;
+     if (debug_info_) { ForwardDebugInfo(i); }
++
++    int targ[] = {
++      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
++
++    if (targ[i]) {
++      int j, n = top_vecs_[i][0]->count();
++      const Dtype *p = top_vecs_[i][0]->cpu_data();
++      Dtype sum = 0;
++      for (j=0; j<n; j++) sum += *p++;
++      fprintf(stderr, "fwd %d sum=%f\n", i, sum);
++    }
++
+   }
+   return loss;
+ }
+@@ -602,6 +616,40 @@
+   CHECK_LT(start, layers_.size());
+   for (int i = start; i >= end; --i) {
+     if (layer_need_backward_[i]) {
++
++#if 1
++      if (i == 14) {
++        const vector<Blob<Dtype>*>& top = top_vecs_[i];
++        const vector<Blob<Dtype>*>& bottom = bottom_vecs_[i];
++        const Dtype* bottom_data = bottom[0]->cpu_data();
++        const Dtype* top_diff = top[0]->cpu_diff();
++        int count = bottom[0]->count();
++        Dtype sum = 0;
++        for(int j=0; j<count; j++){
++          sum += top_diff[j];
++          sum += bottom_data[j];
++        }
++        fprintf(stderr, "sum=%f\n", sum);
++      }
++#else
++      int targ[] = {
++        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++	0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
++	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
++
++      if (targ[i]) {
++	int j, n = bottom_vecs_[i][0]->count();
++	const Dtype *bp = bottom_vecs_[i][0]->cpu_data();
++	const Dtype *tp = top_vecs_[i][0]->cpu_diff();
++	Dtype sum = 0;
++	for (j=0; j<n; j++){
++		sum += *bp++;
++		sum += *tp++;
++	}
++	fprintf(stderr, "bak %d sum=%f\n", i, sum);
++      }
++#endif
++
+       struct timeval start, stop, bls_start, bls_stop;
+ 
+       bls_start = BLAS_SUM;;

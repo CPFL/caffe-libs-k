@@ -1,0 +1,12 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/Makefile.config fast-rcnn/caffe-fast-rcnn/Makefile.config
+--- fast-rcnn-/caffe-fast-rcnn/Makefile.config	2015-12-16 11:59:53.715230764 +0900
++++ fast-rcnn/caffe-fast-rcnn/Makefile.config	2015-12-16 15:19:19.508339785 +0900
+@@ -35,7 +35,7 @@
+ # atlas for ATLAS (default)
+ # mkl for MKL
+ # open for OpenBlas
+-BLAS := atlas
++BLAS := open
+ # Custom (MKL/ATLAS/OpenBLAS) include and lib directories.
+ # Leave commented to accept the defaults for your choice of BLAS
+ # (which should work)!

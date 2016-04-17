@@ -1,0 +1,14 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/Makefile fast-rcnn/caffe-fast-rcnn/Makefile
+--- fast-rcnn-/caffe-fast-rcnn/Makefile	2016-03-04 13:19:49.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/Makefile	2016-03-04 15:52:58.185998531 +0900
+@@ -275,6 +275,10 @@
+ 	COMMON_FLAGS += -DNDEBUG -O2
+ endif
+ 
++ifneq (,$(findstring icpc,$(CXX)))
++	COMMON_FLAGS += -unroll
++endif
++
+ # cuDNN acceleration configuration.
+ ifeq ($(USE_CUDNN), 1)
+ 	LIBRARIES += cudnn

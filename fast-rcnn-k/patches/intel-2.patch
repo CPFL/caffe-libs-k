@@ -1,0 +1,13 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/Makefile fast-rcnn/caffe-fast-rcnn/Makefile
+--- fast-rcnn-/caffe-fast-rcnn/Makefile	2016-01-28 20:42:13.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/Makefile	2016-02-02 12:45:26.107817218 +0900
+@@ -255,6 +255,9 @@
+ # Custom compiler
+ ifdef CUSTOM_CXX
+ 	CXX := $(CUSTOM_CXX)
++	ifneq (,$(findstring icpc,$(CXX)))
++		CXXFLAGS += -xHOST
++	endif
+ endif
+ 
+ # Static linking

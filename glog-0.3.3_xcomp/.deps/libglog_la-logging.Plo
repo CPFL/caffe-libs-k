@@ -1,0 +1,583 @@
+libglog_la-logging.lo: src/logging.cc \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../lib/FCC.pre \
+  src/utilities.h \
+  src/base/mutex.h \
+  ./src/config.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/pthread.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_prolog.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/features.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/features.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/cdefs.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/wordsize.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs-64.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_stlport_version.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl_user_config.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_site_config.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stlcomp.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_fujitsu.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_confix.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/pthread.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/endian.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/endian.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sched.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/types.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/typesizes.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stddef.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stddef.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/time.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/time.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/sched.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/time.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/xlocale.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/signal.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/signal.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/sigset.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/pthreadtypes.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/setjmp.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_epilog.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat_post.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/assert.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/assert.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdlib.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/stdlib.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/waitflags.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/waitstatus.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/types.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/select.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/select.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/sysmacros.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/alloca.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/string \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_hash.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_hash_fun.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cstddef \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/memory \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_alloc.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cstdlib \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cstring \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/string.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/using/cstring \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/new \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_new.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/exception \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_threads.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_threads.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_construct.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_iterator_base.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_move_construct_fwk.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/type_traits.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/type_manips.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_tempbuf.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/climits \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/limits.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../limits.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/posix1_lim.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/local_lim.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/limits.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/posix2_lim.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/xopen_lim.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/stdio_lim.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_uninitialized.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_algobase.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_pair.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_algobase.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_iterator.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_tempbuf.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_raw_storage_iter.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_auto_ptr.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_fwd.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/iosfwd \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cwchar \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/wchar.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdio.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/stdio.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdarg.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stdarg.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/wchar.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_cwchar.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_iosfwd.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/char_traits.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_function.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_function_base.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_function_adaptors.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_base.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_operators.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ctraits_fns.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_range_errors.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_io.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ostream.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ios.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ios_base.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdexcept \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/utility \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_locale.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ctype.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/c_locale.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cctype \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/ctype.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/ctype.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_numpunct.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ios.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_streambuf.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cstdio \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/libio.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/_G_config.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/wchar.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/sys_errlist.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_streambuf.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ostreambuf_iterator.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ostream.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_num_put.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_iostream_string.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_num_put.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_limits.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cfloat \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../float.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_limits.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_istream.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/iterator \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_stream_iterator.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_istreambuf_iterator.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_istream.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_num_get.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_num_get.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_io.c \
+  src/config.h \
+  src/glog/logging.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/errno.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/errno.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/errno.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/errno.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm/errno.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/errno.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-generic/errno-base.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/string.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/ostream \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ioserr.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/sstream \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_sstream.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_sstream.c \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/unistd.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/posix_opt.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/environments.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/confname.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/getopt.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/vector \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/iostream \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_vector.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_relops_cont.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_vector.c \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_bvector.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/stdint.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/inttypes.h \
+  ./src/glog/log_severity.h \
+  ./src/glog/vlog_is_on.h \
+  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/iomanip \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/stat.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/stat.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/utsname.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/utsname.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/fcntl.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/fcntl.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/uio.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/pwd.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/syslog.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/syslog.h \
+  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/syslog-path.h \
+  src/base/commandlineflags.h \
+  src/glog/raw_logging.h \
+  src/base/googleinit.h \
+  src/stacktrace.h
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../lib/FCC.pre:
+
+src/utilities.h:
+
+src/base/mutex.h:
+
+./src/config.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/pthread.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_prolog.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/features.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/features.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/cdefs.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/wordsize.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs-64.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_stlport_version.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl_user_config.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_site_config.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stlcomp.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_fujitsu.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_confix.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/pthread.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/endian.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/endian.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sched.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/types.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/typesizes.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stddef.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stddef.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/time.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/time.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/sched.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/time.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/xlocale.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/signal.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/signal.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/sigset.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/pthreadtypes.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/setjmp.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_epilog.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat_post.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/assert.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/assert.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdlib.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/stdlib.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/waitflags.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/waitstatus.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/types.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/select.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/select.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/sysmacros.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/alloca.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/string:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_hash.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_hash_fun.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cstddef:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/memory:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_alloc.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cstdlib:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cstring:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/string.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/using/cstring:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/new:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_new.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/exception:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_threads.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_threads.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_construct.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_iterator_base.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_move_construct_fwk.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/type_traits.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/type_manips.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_tempbuf.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/climits:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/limits.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../limits.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/posix1_lim.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/local_lim.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/limits.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/posix2_lim.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/xopen_lim.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/stdio_lim.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_uninitialized.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_algobase.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_pair.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_algobase.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_iterator.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_tempbuf.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_raw_storage_iter.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_auto_ptr.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_fwd.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/iosfwd:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cwchar:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/wchar.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdio.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/stdio.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdarg.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stdarg.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/wchar.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_cwchar.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_iosfwd.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/char_traits.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_function.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_function_base.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_function_adaptors.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_base.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_operators.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ctraits_fns.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_range_errors.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_io.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ostream.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ios.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ios_base.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stdexcept:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/utility:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_locale.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ctype.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/c_locale.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cctype:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/ctype.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/ctype.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_numpunct.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ios.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_streambuf.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cstdio:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/libio.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/_G_config.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/wchar.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/sys_errlist.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_streambuf.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ostreambuf_iterator.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ostream.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_num_put.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_iostream_string.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_num_put.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_limits.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/cfloat:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../float.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_limits.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_istream.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/iterator:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_stream_iterator.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_istreambuf_iterator.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_istream.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_num_get.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_num_get.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_string_io.c:
+
+src/config.h:
+
+src/glog/logging.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/errno.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/errno.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/errno.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/linux/errno.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm/errno.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-venus/errno.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/asm-generic/errno-base.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/string.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/ostream:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_ioserr.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/sstream:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_sstream.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_sstream.c:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/unistd.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/posix_opt.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/environments.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/confname.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/getopt.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/vector:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/iostream:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_vector.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_relops_cont.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_vector.c:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_bvector.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/stdint.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/inttypes.h:
+
+./src/glog/log_severity.h:
+
+./src/glog/vlog_is_on.h:
+
+/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/iomanip:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/stat.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/stat.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/utsname.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/utsname.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/fcntl.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/fcntl.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/uio.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/pwd.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/syslog.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/syslog.h:
+
+/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/syslog-path.h:
+
+src/base/commandlineflags.h:
+
+src/glog/raw_logging.h:
+
+src/base/googleinit.h:
+
+src/stacktrace.h:

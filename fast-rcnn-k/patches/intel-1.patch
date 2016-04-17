@@ -1,0 +1,33 @@
+diff -ur fast-rcnn-/caffe-fast-rcnn/Makefile fast-rcnn/caffe-fast-rcnn/Makefile
+--- fast-rcnn-/caffe-fast-rcnn/Makefile	2016-01-28 20:42:13.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/Makefile	2016-02-08 18:49:14.000000000 +0900
+@@ -262,6 +262,8 @@
+ 	STATIC_LINK_COMMAND := -Wl,-force_load $(STATIC_NAME)
+ else ifneq (,$(findstring g++,$(CXX)))
+ 	STATIC_LINK_COMMAND := -Wl,--whole-archive $(STATIC_NAME) -Wl,--no-whole-archive
++else ifneq (,$(findstring icpc,$(CXX)))
++	STATIC_LINK_COMMAND := -Wl,--whole-archive $(STATIC_NAME) -Wl,--no-whole-archive
+ else
+   # The following line must not be indented with a tab, since we are not inside a target
+   $(error Cannot static link with the $(CXX) compiler)
+diff -ur fast-rcnn-/caffe-fast-rcnn/Makefile.config fast-rcnn/caffe-fast-rcnn/Makefile.config
+--- fast-rcnn-/caffe-fast-rcnn/Makefile.config	2016-01-28 20:42:15.000000000 +0900
++++ fast-rcnn/caffe-fast-rcnn/Makefile.config	2016-02-08 18:49:26.000000000 +0900
+@@ -15,6 +15,7 @@
+ # To customize your choice of compiler, uncomment and set the following.
+ # N.B. the default for Linux is g++ and the default for OSX is clang++
+ # CUSTOM_CXX := g++
++CUSTOM_CXX := /opt/intel/bin/icpc
+ 
+ # CUDA directory contains bin/ and lib/ directories that we need.
+ CUDA_DIR := /usr/local/cuda
+@@ -82,6 +83,9 @@
+ # INCLUDE_DIRS += $(shell brew --prefix)/include
+ # LIBRARY_DIRS += $(shell brew --prefix)/lib
+ 
++INCLUDE_DIRS += /usr/include/x86_64-linux-gnu/c++/4.8
++LIBRARY_DIRS += /opt/intel/lib/intel64
++
+ # Uncomment to use `pkg-config` to specify OpenCV library paths.
+ # (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)
+ # USE_PKG_CONFIG := 1
