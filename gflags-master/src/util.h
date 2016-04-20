@@ -82,6 +82,15 @@ extern GFLAGS_DLL_DECL void (*gflags_exitfunc)(int);
 #  define PRIu64 "llu"
 #endif
 
+#ifndef va_copy //fujitsu
+  #ifdef __va_copy
+    #define va_copy(d,s)  __vacopy(d,s)
+  #else
+    #define va_copy(d,s) ((d) = (s))
+  #endif
+#endif
+
+
 typedef signed char int8;
 typedef unsigned char uint8;
 
