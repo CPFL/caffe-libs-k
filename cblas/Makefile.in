@@ -23,7 +23,7 @@ PLAT = K
 #-----------------------------------------------------------------------------
  
 BLLIB = -SSL2
-CBLIB = $(HOME)/install/lib/cblas_$(PLAT).a
+CBLIB = $(HOME)/install/usr/local/lib/cblas_$(PLAT).a
 
 #-----------------------------------------------------------------------------
 # Compilers
