@@ -28,7 +28,8 @@ $ mkdir $HOME/install_x64
  `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/FJSVtclang/GM-1.2.0-19/lib:/opt/FJSVtclang/GM-1.2.0-19/lib64:/home/ra000022/a03330/install/lib:/opt/rist/boost-1.47.0/lib:/opt/aics/netcdf/k-serial-noszip/lib
 `
 3. Add `unset SSH_ASKPASS` to  `~/.bashrc`
-4. Source it `$ . ~/.bashrc`
+4. Add `export PATH=$HOME/install_x64/usr/local/bin:/opt/local/bin:$PATH` to your PATH env var.
+5. Source it `$ . ~/.bashrc`
 
 ## Dependencies compilation
 ### BLAS
@@ -36,6 +37,7 @@ While on the base directory of the cloned repository, execute:
 ```
 $ cd cblas
 $ make
+$ cp include/* $HOME/install/usr/local/include/
 ```
 This will install the library automatically in `$HOME/install/lib`.
 
@@ -114,7 +116,33 @@ $ mkdir build && cd build
 $ cmake -DWITH_OPENMP=ON -DWITH_OPENCL=OFF -DWITH_TIFF=ON -DBUILD_TIFF=ON -DWITH_JPEG=ON -DBUILD_JPEG=ON -DWITH_PNG=PNG -DBUILD_PNG=ON -DWITH_JASPER=ON -DBUILD_JASPER=ON -DWITH_ZLIB=ON -DBUILD_ZLIB=ON -DWITH_FFMPEG=OFF -DWITH_GSTREAMER=OFF -DWITH_GTK=OFF -DWITH_WEBP=OFF -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_opencv_videostab=OFF -DBUILD_opencv_gpu=OFF -DBUILD_opencv_video=OFF -DCMAKE_TOOLCHAIN_FILE=../platforms/fujitsu/fujitsu.cmake ..
 $ make && make install
 $ cp install/* $HOME/install/usr/local/ -rf
+$ cp ../include/extra/ $HOME/install/usr/local/include/extra -rf
 ```
+
+### Protobuf
+##### Compilation of `protoc` on host (x64)
+While on the base directory of the cloned repository, execute:
+```
+$ cd protobuf/
+$ ./autogen.sh
+$ ./configure --prefix=$HOME/install_x64/usr/local
+$ make && make install
+$ make clean
+```
+##### Compilation of `protoc` for SPARC
+```
+$ ./configure CXX="FCCpx -Xg -pthread" CC="fccpx -Xg -pthread " CXFLAGS="-Kfast" CFLAGS="-Kfast" cross_compiling=yes --host=sparc-linux --target=sparc64-linux --with-protoc=$HOME/install_x64/usr/local/bin/protoc --prefix=$HOME/install/usr/local
+$ make && make install
+$  cp src/google/protobuf/stubs/atomicops_internals_fujitsu_sparc.h $HOME/install/usr/local/include/google/protobuf/stubs/
+```
+
+
+## Caffe
 ---
-### TODO Protobuf x64 and SPARC
----
+While on the base directory of the cloned repository, execute:
+```
+$ cd fast-rcnn-k/fast-rcnn/caffe-fast-rcnn/
+$ make
+$ make distribute
+```
+if you want to change the compilation type from RELEASE to DEBUG, open the `Makefile.config` and remove the comment in the line `DEBUG := 1` near the bottom of the file
