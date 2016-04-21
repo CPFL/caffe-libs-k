@@ -315,7 +315,7 @@ else ifeq ($(BLAS), open)
 else ifeq ($(BLAS), fujitsuBLAS)
 	#FUJITSU BLAS and LAPACK thread parallel version
 	COMMON_FLAGS += -SSL2
-	LIBRARIES += cblas_k
+	LIBRARIES += cblas_K
 else
 	# ATLAS
 	ifeq ($(LINUX), 1)
