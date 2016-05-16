@@ -92,6 +92,13 @@ case "$TARGET_OS" in
         PLATFORM_LDFLAGS="-pthread"
         PORT_FILE=port/port_posix.cc
         ;;
+    K)
+        PLATFORM=OS_LINUX
+        COMMON_FLAGS="$MEMCMP_FLAG -pthread -DOS_LINUX -DLEVELDB_PLATFORM_POSIX"
+        PLATFORM_LDFLAGS="-pthread"
+        PORT_FILE=port/port_posix.cc
+        CROSS_COMPILE=true
+        ;;
     SunOS)
         PLATFORM=OS_SOLARIS
         COMMON_FLAGS="$MEMCMP_FLAG -D_REENTRANT -DOS_SOLARIS"
@@ -179,11 +186,12 @@ else
 
     # If -std=c++0x works, use <atomic> as fallback for when memory barriers
     # are not available.
+    rm -f $CXXOUTPUT
     $CXX $CXXFLAGS -std=c++0x -x c++ - -o $CXXOUTPUT 2>/dev/null  <<EOF
       #include <atomic>
       int main() {}
 EOF
-    if [ "$?" = 0 ]; then
+    if [ "$?" = 0 -a -f $CXXOUTPUT ]; then
         COMMON_FLAGS="$COMMON_FLAGS -DLEVELDB_PLATFORM_POSIX -DLEVELDB_ATOMIC_PRESENT"
         PLATFORM_CXXFLAGS="-std=c++0x"
     else

@@ -93,8 +93,7 @@ $ make && make DESTDIR=$HOME/install install
 While on the base directory of the cloned repository, execute:
 ```
 $ cd leveldb/
-$ ./configure CXX="FCCpx -Xg -pthread" CC="fccpx -Xg -pthread " CXFLAGS="-Kfast" CFLAGS="-Kfast" cross_compiling=yes
-$ make
+$ make CXX="FCCpx -Kfast -mt -Xg -fPIC -pthread -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACRO -DSNAPPY  -I$HOME/install/usr/local/include -L$HOME/install/usr/local/lib" CC="fccpx -Kfast -mt -Xg -fPIC -pthread -DSNAPPY -I$HOME/install/usr/local/include -L$HOME/install/usr/local/lib"   TARGET_OS=K PLATFORM_LIBS="-lsnappy"
 $ cp include/* $HOME/install/usr/local/include/ -r
 $ cp out-shared/* $HOME/install/usr/local/lib/ -r
 $ cp out-static/* $HOME/install/usr/local/lib/ -r

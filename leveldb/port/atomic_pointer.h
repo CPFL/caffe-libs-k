@@ -20,7 +20,7 @@
 
 #include <stdint.h>
 #ifdef LEVELDB_ATOMIC_PRESENT
-//#include <atomic>//fujitsu
+#include <atomic>
 #endif
 #ifdef OS_WIN
 #include <windows.h>
@@ -143,7 +143,7 @@ class AtomicPointer {
 };
 
 // AtomicPointer based on <cstdatomic>
-/*#elif defined(LEVELDB_ATOMIC_PRESENT)
+#elif defined(LEVELDB_ATOMIC_PRESENT)
 class AtomicPointer {
  private:
   std::atomic<void*> rep_;
@@ -162,7 +162,7 @@ class AtomicPointer {
   inline void NoBarrier_Store(void* v) {
     rep_.store(v, std::memory_order_relaxed);
   }
-};*/
+};
 
 // Atomic pointer based on sparc memory barriers
 #elif defined(__sparcv9) && defined(__GNUC__)
