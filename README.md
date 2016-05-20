@@ -130,7 +130,7 @@ $ make clean
 ```
 ##### Compilation of `protoc` for SPARC
 ```
-$ ./configure CXX="FCCpx -Xg -pthread" CC="fccpx -Xg -pthread " CXFLAGS="-Kfast" CFLAGS="-Kfast" cross_compiling=yes --host=sparc-linux --target=sparc64-linux --with-protoc=$HOME/install_x64/usr/local/bin/protoc --prefix=$HOME/install/usr/local
+$ ./configure CXX="FCCpx -Xg -pthread" CC="fccpx -Xg -pthread " CXXFLAGS="-Kfast" CFLAGS="-Kfast" cross_compiling=yes --host=sparc-linux --target=sparc64-linux --with-protoc=$HOME/install_x64/usr/local/bin/protoc --prefix=$HOME/install/usr/local
 $ make && make install
 $  cp src/google/protobuf/stubs/atomicops_internals_fujitsu_sparc.h $HOME/install/usr/local/include/google/protobuf/stubs/
 ```

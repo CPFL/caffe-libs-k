@@ -34,6 +34,7 @@
 
 #include <cerrno>
 #include <string>
+#include <clocale>
 
 #include <google/protobuf/testing/googletest.h>
 #include <gtest/gtest.h>

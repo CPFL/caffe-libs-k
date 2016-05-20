@@ -121,9 +121,10 @@ inline bool Snappy_Compress(const char* input, size_t length,
   snappy::RawCompress(input, length, &(*output)[0], &outlen);
   output->resize(outlen);
   return true;
-#endif
+#else
 
   return false;
+#endif
 }
 
 inline bool Snappy_GetUncompressedLength(const char* input, size_t length,

@@ -384,6 +384,8 @@
 #  if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 2)
 #   undef GTEST_HAS_STD_TUPLE_
 #  endif
+# elif defined(__FUJITSU)
+#   undef GTEST_HAS_STD_TUPLE_
 # endif
 #endif
 
@@ -659,7 +661,9 @@ struct _RTL_CRITICAL_SECTION;
 // in C++11 mode and libstdc++ isn't very old (binaries targeting OS X 10.6
 // can build with clang but need to use gcc4.2's libstdc++).
 # if GTEST_LANG_CXX11 && (!defined(__GLIBCXX__) || __GLIBCXX__ > 20110325)
+#if !defined(__FUJITSU)
 #  define GTEST_ENV_HAS_STD_TUPLE_ 1
+#endif
 # endif
 
 # if GTEST_ENV_HAS_TR1_TUPLE_ || GTEST_ENV_HAS_STD_TUPLE_

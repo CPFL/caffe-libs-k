@@ -16,8 +16,8 @@ set (HAVE_OPENMP TRUE)
 ## set(CMAKE_C_COMPILER /opt/FJSVXosDevkit/sparc64fx/V01L02E07/bin/sparc64-unknown-linux-gnu-gcc)
 ##set(CMAKE_CXX_COMPILER /opt/FJSVXosDevkit/sparc64fx/V01L02E07/bin/sparc64-unknown-linux-gnu-g++)
 
-set(CMAKE_C_FLAGS "-Xg -pthread")
-set(CMAKE_CXX_FLAGS "-Xg -pthread")
+set(CMAKE_C_FLAGS "-Xg -mt -pthread -fPIC")
+set(CMAKE_CXX_FLAGS "-Xg -mt -pthread -fPIC")
 
 
 # Prevent CMake from adding GNU-specific linker flags (-rdynamic)
@@ -27,5 +27,5 @@ set(CMAKE_CXX_COMPILER_ID "Fujitsu" CACHE STRING "Fujitsu C++ cross-compiler" FO
 
 # FindOpenMP.cmake does not try -Kopenmp,but the package will try specific
 # flags based on the compier ID.
-set(OMP_FLAG_Fujitsu "-Kopenmp -Xg -pthread -Kfast")
+set(OMP_FLAG_Fujitsu "-Kopenmp -mt -Xg -pthread -Kfast")
 
