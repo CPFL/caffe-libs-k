@@ -162,11 +162,11 @@ ifneq ($(CPU_ONLY), 1)
 	LIBRARIES := cudart cublas curand
 endif
 LIBRARIES += glog gflags protobuf leveldb snappy \
-	lmdb boost_system hdf5_hl hdf5 m \
+	lmdb boost_system boost_atomic hdf5_hl hdf5 m \
 	opencv_core opencv_highgui opencv_imgproc gtest boost_date_time
 PYTHON_LIBRARIES := boost_python python2.7 boost_regex \
         boost_date_time boost_iostreams 
-WARNINGS := -Wall -Wno-sign-compare
+WARNINGS := 
 
 ##############################
 # Set build directories
@@ -315,7 +315,8 @@ else ifeq ($(BLAS), open)
 else ifeq ($(BLAS), fujitsuBLAS)
 	#FUJITSU BLAS and LAPACK thread parallel version
 	COMMON_FLAGS += -SSL2
-	LIBRARIES += cblas_K
+	LIBRARIES += cblas_K fjlapack
+	#LIBRARIES += cblas_dummy
 else
 	# ATLAS
 	ifeq ($(LINUX), 1)
@@ -347,11 +348,11 @@ CXXFLAGS += -MMD -MP
 
 # Complete build flags.
 COMMON_FLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
-CXXFLAGS += -Xg -pthread -Kfast -fPIC -Kopenmp $(COMMON_FLAGS) $(WARNINGS)
+CXXFLAGS += -Xg -pthread -Kfast -mt -fPIC -Kopenmp $(COMMON_FLAGS) $(WARNINGS)
 NVCCFLAGS += -ccbin=$(CXX) -Xcompiler -fPIC $(COMMON_FLAGS)
 # mex may invoke an older gcc that is too liberal with -Wuninitalized
 MATLAB_CXXFLAGS := $(CXXFLAGS) -Wno-uninitialized
-LINKFLAGS += -Xg -Kfast -pthread -fPIC -Kopenmp $(COMMON_FLAGS) $(WARNINGS)
+LINKFLAGS += -Xg -Kfast -pthread -mt -fPIC -Kopenmp $(COMMON_FLAGS) $(WARNINGS)
 
 USE_PKG_CONFIG ?= 0
 ifeq ($(USE_PKG_CONFIG), 1)
@@ -363,9 +364,9 @@ LDFLAGS += $(foreach librarydir,$(LIBRARY_DIRS),-L$(librarydir)) $(PKG_CONFIG) \
 		$(foreach library,$(LIBRARIES),-l$(library))
 ifdef OPENMP
 ifneq (,$(findstring icpc,$(CXX)))
-	OMP_OPT = -Kopenmp -Xg -pthread -Kfast
+	OMP_OPT = -Kopenmp -Xg -mt -pthread -Kfast
 else
-	OMP_OPT = -Kopenmp -Xg -pthread -Kfast
+	OMP_OPT = -Kopenmp -Xg -mt -pthread -Kfast
 endif
 CXXFLAGS += $(OMP_OPT)
 LDFLAGS += $(OMP_OPT)
