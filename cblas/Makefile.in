@@ -22,8 +22,9 @@ PLAT = K
 # Libraries and includs
 #-----------------------------------------------------------------------------
  
-BLLIB = -SSL2
+BLLIB = -lfjlapack -SSL2
 CBLIB = $(HOME)/install/usr/local/lib/libcblas_$(PLAT).a
+CBLIBSO = $(HOME)/install/usr/local/lib/libcblas_$(PLAT).so
 
 #-----------------------------------------------------------------------------
 # Compilers
@@ -37,8 +38,8 @@ LOADER = $(CC)
 # Flags for Compilers
 #-----------------------------------------------------------------------------
 
-CFLAGS = -O3 -DADD_
-FFLAGS = -O3  
+CFLAGS = -Kfast -KPIC -Xg -DADD_
+FFLAGS = -Kfast -KPIC  
 
 #-----------------------------------------------------------------------------
 # Archive programs and flags

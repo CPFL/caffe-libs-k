@@ -237,6 +237,8 @@ all3:  $(alev3) $(errhand)
 all: $(alev)  
 	$(ARCH) $(ARCHFLAGS)  $(CBLIB) $(alev) 
 	$(RANLIB) $(CBLIB)
+allso: $(alev)
+	$(CC) -shared $(CFLAGS) -o $(CBLIBSO) $(alev) $(BLLIB)
 
 
 .SUFFIXES: .o .c .f

@@ -145,6 +145,8 @@ allprecision3:
 	( cd src && make all3)
 allprecision:
 	( cd src && make all)
+allso:
+	( cd src && make allso)
 
 stest1: 
 	( cd testing && make stest1 )
