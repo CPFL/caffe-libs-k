@@ -145,3 +145,8 @@ $ make
 $ make distribute
 ```
 if you want to change the compilation type from RELEASE to DEBUG, open the `Makefile.config` and remove the comment in the line `DEBUG := 1` near the bottom of the file
+
+To run Caffe, Please set as following:
+    $ . /home/system/Env_base
+    $ . /opt/aics/hpcu/env.sh
+    $ export LD_LIBRARY_PATH=$HOME/install/usr/local/lib:/scratch/ra000022/boost/lib:$LD_LIBRARY_PATH
