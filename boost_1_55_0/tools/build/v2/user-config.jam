@@ -43,6 +43,8 @@
 
 # Configure specific gcc version, giving alternative name to use.
 # using gcc : 3.2 : g++-3.2 ;
+using fujitsu : : FCC -Xg -mt -pthread -Kfast ;
+using mpi : mpiFCC ;
 
 
 # -------------------

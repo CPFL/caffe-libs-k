@@ -828,6 +828,7 @@ local rule toolset-tag ( name : type ? : property-set )
     switch [ $(property-set).get <toolset> ]
     {
         case borland* : tag += bcb ;
+	case fujitsu  : tag += fujitsu ;
         case clang* :
         {
             switch [ $(property-set).get <toolset-clang:platform> ]

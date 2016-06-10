@@ -129,6 +129,10 @@ case $BOOST_JAM_TOOLSET in
     BOOST_JAM_CC="gcc -DNT"
     ;;
 
+    fujitsu)
+    BOOST_JAM_CC=fcc
+    ;;
+
     gcc)
     BOOST_JAM_CC=gcc
     ;;

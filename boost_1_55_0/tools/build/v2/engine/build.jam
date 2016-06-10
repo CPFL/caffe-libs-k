@@ -242,6 +242,13 @@ toolset intel-win32 icl : /Fe : -D
     [ opt --debug : /MTd /DEBUG /Z7 /Od /Ob0 ]
     -I$(--python-include) -I$(--extra-include)
     : kernel32.lib advapi32.lib user32.lib $(--python-lib[1]) ;
+## fujitsu
+toolset fujitsu fcc : "-o " : -D
+    :
+    [ opt --release : -Kfast ]
+    [ opt --debug : -g ]
+    -I$(--python-include) -I$(--extra-include)
+    : -L$(--python-lib[1]) -l$(--python-lib[2]) ;
 ## KCC ?
 toolset kcc KCC : "-o " : -D
     :

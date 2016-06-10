@@ -1,0 +1,24 @@
+# Copyright Vladimir Prus 2004.
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt
+# or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+# This is a generic 'fujitsu' toolset. Depending on the current
+# system, it forwards either to 'fujitsu-linux'.
+# modules.
+
+import feature ;
+import os ;
+import toolset ;
+
+feature.extend toolset : fujitsu ;
+feature.subfeature toolset fujitsu : platform : : propagated link-incompatible ;
+
+rule init ( * : * )
+{
+    if [ os.name ] = LINUX
+    {
+        toolset.using fujitsu-linux : 
+          $(1) : $(2) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ;
+    }
+}

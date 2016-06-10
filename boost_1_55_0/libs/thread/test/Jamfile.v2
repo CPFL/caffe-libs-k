@@ -22,6 +22,7 @@ import testing ;
 project
     : requirements
         <threading>multi
+	<library>/boost/date_time//boost_date_time
 
         <define>BOOST_THREAD_THROW_IF_PRECONDITION_NOT_SATISFIED
 

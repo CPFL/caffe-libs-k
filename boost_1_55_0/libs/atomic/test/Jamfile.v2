@@ -14,6 +14,7 @@ project boost/atomic/test
       <threading>multi
       <library>/boost/thread//boost_thread
       <library>/boost/atomic//boost_atomic
+      <library>/boost/date_time//boost_date_time
     ;
 
 test-suite atomic

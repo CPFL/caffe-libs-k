@@ -691,6 +691,7 @@ def toolset_tag(name, target_type, prop_set):
     tools = tools[0]
     if tools.startswith('borland'): tag += 'bcb'
     elif tools.startswith('como'): tag += 'como'
+    elif tools.startswith('fujitsu'): tag += 'fujitsu'
     elif tools.startswith('cw'): tag += 'cw'
     elif tools.startswith('darwin'): tag += 'xgcc'
     elif tools.startswith('edg'): tag += edg

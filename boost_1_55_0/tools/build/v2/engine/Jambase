@@ -948,7 +948,7 @@ else if $(UNIX)
     case UNIXWARE :
     RANLIB      ?= "" ;
     RELOCATE    ?= true ;
-    }
+    } 
 
     # UNIX defaults
 

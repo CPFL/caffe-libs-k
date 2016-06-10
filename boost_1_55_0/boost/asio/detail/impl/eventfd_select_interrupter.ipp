@@ -23,6 +23,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#ifdef __FUJITSU
+#include <unistd.h>
+#endif
 #if __GLIBC__ == 2 && __GLIBC_MINOR__ < 8
 # include <asm/unistd.h>
 #else // __GLIBC__ == 2 && __GLIBC_MINOR__ < 8

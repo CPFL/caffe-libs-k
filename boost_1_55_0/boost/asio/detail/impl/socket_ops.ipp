@@ -23,6 +23,9 @@
 #include <cstring>
 #include <cerrno>
 #include <new>
+#ifdef __FUJITSU
+#include <unistd.h>
+#endif
 #include <boost/asio/detail/assert.hpp>
 #include <boost/asio/detail/socket_ops.hpp>
 #include <boost/asio/error.hpp>

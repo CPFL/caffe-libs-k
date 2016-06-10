@@ -246,6 +246,15 @@ alias asm_context_sources
    ;
 
 alias asm_context_sources
+   : asm/make_sparc64_sysv_elf_gas.S
+     asm/jump_sparc64_sysv_elf_gas.S
+   : <address-model>64
+     <architecture>sparc
+     <binary-format>elf
+     <toolset>fujitsu
+   ;
+
+alias asm_context_sources
    : [ make asm/make_sparc64_sysv_elf_gas.o : asm/make_sparc64_sysv_elf_gas.S : @gas ]
      [ make asm/jump_sparc64_sysv_elf_gas.o : asm/jump_sparc64_sysv_elf_gas.S : @gas ]
    : <address-model>64
