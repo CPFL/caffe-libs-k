@@ -7,7 +7,7 @@ BUILD_DIR_LINK := $(BUILD_DIR)
 RELEASE_BUILD_DIR ?= .$(BUILD_DIR)_release
 DEBUG_BUILD_DIR ?= .$(BUILD_DIR)_debug
 
-DEBUG ?= 0
+DEBUG ?= 1
 ifeq ($(DEBUG), 1)
 	BUILD_DIR := $(DEBUG_BUILD_DIR)
 	OTHER_BUILD_DIR := $(RELEASE_BUILD_DIR)
@@ -225,7 +225,8 @@ ifeq ($(LINUX), 1)
 	endif
 	# boost::thread is reasonably called boost_thread (compare OS X)
 	# We will also explicitly add stdc++ to the link target.
-	LIBRARIES += boost_thread stdc++
+	# But Fujitsu compiler don't work when add stdc++.
+	LIBRARIES += boost_thread
 endif
 
 # OS X:
@@ -272,10 +273,10 @@ endif
 
 # Debugging
 ifeq ($(DEBUG), 1)
-	COMMON_FLAGS += -DDEBUG -g -O0
+	COMMON_FLAGS += -DDEBUG -g -O0 -Ntl_notrt -Nnoline
 	NVCCFLAGS += -G
 else
-	COMMON_FLAGS += -DNDEBUG -O2
+	COMMON_FLAGS += -DNDEBUG -g -O2
 endif
 
 # cuDNN acceleration configuration.
