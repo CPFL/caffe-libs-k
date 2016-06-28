@@ -76,7 +76,11 @@
 #define GTEST_CONCAT_TOKEN_(foo, bar) GTEST_CONCAT_TOKEN_IMPL_(foo, bar)
 #define GTEST_CONCAT_TOKEN_IMPL_(foo, bar) foo ## bar
 
+#if defined(__FUJITSU)
+class ProtocolMessage{};
+#else
 class ProtocolMessage;
+#endif
 namespace proto2 { class Message; }
 
 namespace testing {
@@ -924,16 +928,27 @@ struct IsAProtocolMessage
 // only, for example, we would mistakenly think that a class named
 // iterator is an STL container.
 //
+// But _Rb_tree_iterator On Fujitsu Compiler has a member (typedef) 
+// iterator and const_iterator.
 // Also note that the simpler approach of overloading
 // IsContainerTest(typename C::const_iterator*) and
 // IsContainerTest(...) doesn't work with Visual Age C++ and Sun C++.
 typedef int IsContainer;
+#ifndef __FUJITSU
 template <class C>
 IsContainer IsContainerTest(int /* dummy */,
                             typename C::iterator* /* it */ = NULL,
                             typename C::const_iterator* /* const_it */ = NULL) {
   return 0;
 }
+#else
+template <class C>
+IsContainer IsContainerTest(int /* dummy */,
+                            typename C::begin* /* it */ = NULL,
+                            typename C::end* /* const_it */ = NULL) {
+  return 0;
+}
+#endif
 
 typedef char IsNotContainer;
 template <class C>

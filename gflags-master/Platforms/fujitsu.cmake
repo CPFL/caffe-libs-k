@@ -9,10 +9,10 @@ set_property(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS FALSE)
 set(CMAKE_C_COMPILER fccpx)
 set(CMAKE_CXX_COMPILER FCCpx)
 
-set(CMAKE_C_FLAGS "-Xg -pthread -Kfast")
-set(CMAKE_CXX_FLAGS "-Xg -pthread -std=c++11 -Kfast")
+set(CMAKE_C_FLAGS "-Xg -mt -pthread -Kfast -fPIC")
+set(CMAKE_CXX_FLAGS "-Xg -mt -pthread -Kfast -fPIC")
 
-set(FUJITSU_PATH "/opt/FJSVtclang/GM-1.2.0-19/")
+set(FUJITSU_PATH "/opt/FJSVtclang/GM-1.2.0-20/")
 
 include_directories(${FUJITSU_PATH}/include)
 

@@ -25,7 +25,11 @@ using boost::scoped_ptr;
 
 namespace caffe {
 
+#ifndef CPU_ONLY
 typedef ::testing::Types<FloatGPU, DoubleGPU> TestDtypesGPU;
+#else
+typedef ::testing::Types<FloatCPU, DoubleCPU> TestDtypesCPU;
+#endif
 
 template <typename TypeParam>
 class ROIPoolingLayerTest : public MultiDeviceTest<TypeParam> {
@@ -85,7 +89,11 @@ class ROIPoolingLayerTest : public MultiDeviceTest<TypeParam> {
   vector<Blob<Dtype>*> blob_top_vec_;
 };
 
+#ifndef CPU_ONLY
 TYPED_TEST_CASE(ROIPoolingLayerTest, TestDtypesGPU);
+#else
+TYPED_TEST_CASE(ROIPoolingLayerTest, TestDtypesCPU);
+#endif
 
 TYPED_TEST(ROIPoolingLayerTest, TestGradient) {
   typedef typename TypeParam::Dtype Dtype;

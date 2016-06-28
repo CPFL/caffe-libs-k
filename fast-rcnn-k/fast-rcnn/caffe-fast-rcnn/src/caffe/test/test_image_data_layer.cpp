@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "gtest/gtest.h"
-
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
