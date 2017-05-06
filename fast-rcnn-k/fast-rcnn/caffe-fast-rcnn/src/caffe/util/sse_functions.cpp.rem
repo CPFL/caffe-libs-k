@@ -1,0 +1,38 @@
+#include "caffe/util/sse_functions.hpp"
+#include <boost/math/special_functions/next.hpp>
+#include <boost/random.hpp>
+#include <omp.h>
+#include <limits>
+
+#include "caffe/common.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/util/rng.hpp"
+
+namespace caffe {
+  /*
+template<>
+__m256d caffe_load<float>(const float* A) {
+  //__m256* m1 = static_cast<__m256*>(m);
+  //*m1 = _mm256_load_ps(A);
+  __m256d dummy;
+  return dummy;
+}
+
+template<>
+__m256d caffe_load<double>(const double* A) {
+  //__m256d* m1 = static_cast<__m256d*>(m);
+  //*m1 = _mm256_load_pd(A);
+  return _mm256_load_pd(A);
+}
+
+template<>
+void caffe_store<float>(float* A, __m256d m) {
+  //NOT_IMPLEMENTED;//_mm256_store_ps(A, m);
+}
+
+template<>
+void caffe_store<double>(double* A, __m256d m) {
+  _mm256_store_pd(A, m);
+}
+  */
+}

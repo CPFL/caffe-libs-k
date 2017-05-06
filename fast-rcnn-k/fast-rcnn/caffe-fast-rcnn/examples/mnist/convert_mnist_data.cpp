@@ -170,9 +170,9 @@ void convert_dataset(const char* image_filename, const char* label_filename,
 }
 
 int main(int argc, char** argv) {
-#ifndef GFLAGS_GFLAGS_H_
+  //#ifndef GFLAGS_GFLAGS_H_
   namespace gflags = google;
-#endif
+  //#endif
 
   gflags::SetUsageMessage("This script converts the MNIST dataset to\n"
         "the lmdb/leveldb format used by Caffe to load data.\n"

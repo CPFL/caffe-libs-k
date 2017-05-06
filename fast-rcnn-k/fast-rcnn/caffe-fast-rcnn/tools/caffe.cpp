@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <omp.h>
 
 #include "boost/algorithm/string.hpp"
 #include "caffe/caffe.hpp"
@@ -15,7 +16,6 @@ using caffe::Layer;
 using caffe::shared_ptr;
 using caffe::Timer;
 using caffe::vector;
-
 
 DEFINE_int32(gpu, -1,
     "Run in GPU mode on given device ID.");
@@ -100,7 +100,6 @@ int train() {
 
   caffe::SolverParameter solver_param;
   caffe::ReadProtoFromTextFileOrDie(FLAGS_solver, &solver_param);
-
   // If the gpu flag is not provided, allow the mode and device to be set
   // in the solver prototxt.
   if (FLAGS_gpu < 0
@@ -121,7 +120,7 @@ int train() {
   LOG(INFO) << "Starting Optimization";
   shared_ptr<caffe::Solver<float> >
     solver(caffe::GetSolver<float>(solver_param));
-
+  
   if (FLAGS_snapshot.size()) {
     LOG(INFO) << "Resuming from " << FLAGS_snapshot;
     solver->Solve(FLAGS_snapshot);
@@ -132,6 +131,9 @@ int train() {
     solver->Solve();
   }
   LOG(INFO) << "Optimization Done.";
+
+  caffe::MPI::Finalize();
+
   return 0;
 }
 RegisterBrewFunction(train);
@@ -197,6 +199,8 @@ int test() {
     }
     LOG(INFO) << output_name << " = " << mean_score << loss_msg_stream.str();
   }
+
+  caffe::MPI::Finalize();
 
   return 0;
 }
@@ -306,6 +310,11 @@ int main(int argc, char** argv) {
       "  time            benchmark model execution time");
   // Run tool or show usage.
   caffe::GlobalInit(&argc, &argv);
+
+  int prov;
+  MPI_Init_thread(NULL, NULL, MPI_THREAD_SERIALIZED, &prov);
+  CHECK_EQ(MPI_THREAD_SERIALIZED, prov);
+  //caffe::MPI::Init();
   if (argc == 2) {
     return GetBrewFunction(caffe::string(argv[1]))();
   } else {

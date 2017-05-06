@@ -1,0 +1,9 @@
+universe = parallel
+executable = cifar10-execute
+arguments = /home/dazzhe/caffe-libs-k-master/fast-rcnn-k/fast-rcnn/caffe-fast-rcnn/build/tools/caffe train --solver=cifar10_quick_solver.prototxt
+output = output.log
+error = error.log
+log = log.log
+machine_count = 16
+request_cpus = 20
+queue

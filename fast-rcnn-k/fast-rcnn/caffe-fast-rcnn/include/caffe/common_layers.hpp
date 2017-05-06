@@ -249,19 +249,55 @@ class InnerProductLayer : public Layer<Dtype> {
 
  protected:
   virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
-      const vector<Blob<Dtype>*>& top);
-  virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
+			   const vector<Blob<Dtype>*>& top) {
+    const string mode = this->layer_param_.sharing_method();
+    if (mode == string("data")) {
+      Forward_cpu_data_parallelized(bottom, top);
+    } else if (mode == string("model")) {
+      Forward_cpu_model_parallelized(bottom, top);
+    } else {
+      LOG(FATAL) << "Unknown sharing method.";
+    }
+  }
+
+  virtual void Backward_cpu(const vector<Blob<Dtype>*>& top,
+			    const vector<bool>& propagate_down,
+			    const vector<Blob<Dtype>*>& bottom) {
+    string mode = this->layer_param_.sharing_method();
+    if (mode == string("data")) {
+      Backward_cpu_data_parallelized(top, propagate_down, bottom);
+    } else if (mode == string("model")) {
+      Backward_cpu_model_parallelized(top, propagate_down, bottom);
+    } else {
+      LOG(FATAL) << "Unknown sharing method.";
+    }
+  }
+  void Forward_cpu_model_parallelized(const vector<Blob<Dtype>*>& bottom,
+				      const vector<Blob<Dtype>*>& top);
+  void Forward_cpu_data_parallelized(const vector<Blob<Dtype>*>& bottom,
+				     const vector<Blob<Dtype>*>& top);
+  void Backward_cpu_model_parallelized(const vector<Blob<Dtype>*>& top,
+				       const vector<bool>& propagate_down,
+				       const vector<Blob<Dtype>*>& bottom);
+  void Backward_cpu_data_parallelized(const vector<Blob<Dtype>*>& top,
+				       const vector<bool>& propagate_down,
+				       const vector<Blob<Dtype>*>& bottom);
+  /*  virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
   virtual void Backward_cpu(const vector<Blob<Dtype>*>& top,
-      const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
+  const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);*/
+  virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top);
   virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,
       const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom);
-
+  
   int M_;
   int K_;
   int N_;
   bool bias_term_;
   Blob<Dtype> bias_multiplier_;
+  Blob<Dtype> top_;
+  Blob<Dtype> bottom_;
 };
 
 /**

@@ -1,0 +1,8 @@
+universe = parallel
+executable = cifar10_full-execute
+output = output.log
+error = error.log
+log = log.log
+machine_count = 16
+request_cpus = 20
+queue

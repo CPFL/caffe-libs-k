@@ -10,6 +10,10 @@
 #include "caffe/util/io.hpp"
 #include "caffe/util/math_functions.hpp"
 #include "caffe/util/upgrade_proto.hpp"
+#include "caffe/util/timer.hpp"
+#include "caffe/util/mpi.hpp"
+
+static Timer timer;
 
 namespace caffe {
 
@@ -166,15 +170,16 @@ void Solver<Dtype>::Step(int iters) {
   int average_loss = this->param_.average_loss();
   vector<Dtype> losses;
   Dtype smoothed_loss = 0;
-
   for (; iter_ < stop_iter; ++iter_) {
     if (param_.test_interval() && iter_ % param_.test_interval() == 0
         && (iter_ > 0 || param_.test_initialization())) {
       TestAll();
     }
 
+    timer.Start(29);
     const bool display = param_.display() && iter_ % param_.display() == 0;
     net_->set_debug_info(display && param_.debug_info());
+    
     Dtype loss = net_->ForwardBackward(bottom_vec);
     if (losses.size() < average_loss) {
       losses.push_back(loss);
@@ -186,6 +191,7 @@ void Solver<Dtype>::Step(int iters) {
       losses[idx] = loss;
     }
     if (display) {
+      
       LOG(INFO) << "Iteration " << iter_ << ", loss = " << smoothed_loss;
       const vector<Blob<Dtype>*>& result = net_->output_blobs();
       int score_index = 0;
@@ -207,13 +213,18 @@ void Solver<Dtype>::Step(int iters) {
         }
       }
     }
+    timer.Start(27);
     ComputeUpdateValue();
     net_->Update();
+    stringstream ss; ss << MPI::rank();
+
+    timer.Stop(27,10,ss.str()+string("update"));
 
     // Save a snapshot if needed.
     if (param_.snapshot() && (iter_ + 1) % param_.snapshot() == 0) {
       Snapshot();
     }
+    timer.Stop(29, 50, std::string("50iter"));
   }
 }
 
@@ -250,6 +261,10 @@ void Solver<Dtype>::Solve(const char* resume_file) {
   if (param_.test_interval() && iter_ % param_.test_interval() == 0) {
     TestAll();
   }
+
+  MPI::Scheduler<Dtype>& scheduler = MPI::Scheduler<Dtype>::getInstance();
+  scheduler.stopInstance();
+
   LOG(INFO) << "Optimization Done.";
 }
 
@@ -471,16 +486,29 @@ void SGDSolver<Dtype>::ComputeUpdateValue() {
   case Caffe::CPU:
     for (int param_id = 0; param_id < net_params.size(); ++param_id) {
       // Compute the value to history, and then copy them to the blob's diff.
+      //timer.Start(param_id);
       Dtype local_rate = rate * net_params_lr[param_id];
       Dtype local_decay = weight_decay * net_params_weight_decay[param_id];
-
       if (local_decay) {
         if (regularization_type == "L2") {
+	  Dtype *diff = net_params[param_id]->mutable_cpu_diff();
+	  const Dtype *weight = net_params[param_id]->cpu_data();
+	  int data_size = net_params[param_id]->count();
+	  if (data_size >= 1000) {
+#pragma omp parallel for
+	    for (int c = 0; c < data_size; ++c) {
+	      diff[c] += local_decay*weight[c];
+	    }
+	  } else {
+	    for (int c = 0; c < data_size; ++c) {
+	      diff[c] += local_decay*weight[c];
+	    }
+	  }
           // add weight decay
-          caffe_axpy(net_params[param_id]->count(),
-              local_decay,
-              net_params[param_id]->cpu_data(),
-              net_params[param_id]->mutable_cpu_diff());
+          //caffe_axpy(net_params[param_id]->count(),
+          //    local_decay,
+          //    net_params[param_id]->cpu_data(),
+          //    net_params[param_id]->mutable_cpu_diff());
         } else if (regularization_type == "L1") {
           caffe_cpu_sign(net_params[param_id]->count(),
               net_params[param_id]->cpu_data(),
@@ -493,14 +521,35 @@ void SGDSolver<Dtype>::ComputeUpdateValue() {
           LOG(FATAL) << "Unknown regularization type: " << regularization_type;
         }
       }
-
-      caffe_cpu_axpby(net_params[param_id]->count(), local_rate,
-                net_params[param_id]->cpu_diff(), momentum,
-                history_[param_id]->mutable_cpu_data());
+      //stringstream ss; ss << net_params[param_id]->count();
+      //timer.Stop(3,100,ss.str()+string(":1"));
+      //timer2.Start();
+      const Dtype *diff = net_params[param_id]->cpu_diff();
+      Dtype *weight = history_[param_id]->mutable_cpu_data();
+      int data_size = net_params[param_id]->count();
+      if (data_size >= 2000) {
+#pragma omp parallel for
+	for (int c = 0; c < data_size; ++c) {
+	  weight[c] = local_rate*diff[c] + momentum*weight[c];
+	}
+      } else {
+	for (int c = 0; c < data_size; ++c) {
+	  weight[c] = local_rate*diff[c] + momentum*weight[c];
+	}
+      }
+      //caffe_cpu_axpby(net_params[param_id]->count(), local_rate,
+      //          net_params[param_id]->cpu_diff(), momentum,
+      //          history_[param_id]->mutable_cpu_data());
+      //timer2.Stop(3,800,ss.str()+string(":2"));
+      //timer2.Start();
       // copy
+      
       caffe_copy(net_params[param_id]->count(),
           history_[param_id]->cpu_data(),
           net_params[param_id]->mutable_cpu_diff());
+      //timer2.Stop(3,100,ss.str()+string(":3"));
+      //stringstream ss; ss << param_id;
+      //timer.Stop(param_id, 10, ss.str());
     }
     break;
   case Caffe::GPU:
@@ -704,14 +753,19 @@ void AdaGradSolver<Dtype>::ComputeUpdateValue() {
     for (int param_id = 0; param_id < net_params.size(); ++param_id) {
       Dtype local_rate = rate * net_params_lr[param_id];
       Dtype local_decay = weight_decay * net_params_weight_decay[param_id];
-
       if (local_decay) {
         if (regularization_type == "L2") {
           // add weight decay
-          caffe_axpy(net_params[param_id]->count(),
-              local_decay,
-              net_params[param_id]->cpu_data(),
-              net_params[param_id]->mutable_cpu_diff());
+	  Dtype *diff = net_params[param_id]->mutable_cpu_diff();
+	  Dtype *weight = net_params[param_id]->mutable_cpu_data();
+#pragma omp parallel for
+	  for (int c = 0; c < net_params[param_id]->count(); ++c) {
+	    diff[c] += local_decay*weight[c];
+	  }
+          //caffe_axpy(net_params[param_id]->count(),
+          //    local_decay,
+          //    net_params[param_id]->cpu_data(),
+          //    net_params[param_id]->mutable_cpu_diff());
         } else if (regularization_type == "L1") {
           caffe_cpu_sign(net_params[param_id]->count(),
               net_params[param_id]->cpu_data(),
@@ -724,7 +778,6 @@ void AdaGradSolver<Dtype>::ComputeUpdateValue() {
           LOG(FATAL) << "Unknown regularization type: " << regularization_type;
         }
       }
-
       // compute square of gradient in update
       caffe_powx(net_params[param_id]->count(),
           net_params[param_id]->cpu_diff(), Dtype(2),

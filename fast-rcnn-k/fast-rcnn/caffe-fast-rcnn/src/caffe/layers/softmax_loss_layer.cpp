@@ -6,6 +6,8 @@
 #include "caffe/layer_factory.hpp"
 #include "caffe/util/math_functions.hpp"
 #include "caffe/vision_layers.hpp"
+#include "caffe/util/mpi.hpp"
+#include "caffe/util/mpi_functions.hpp"
 
 namespace caffe {
 
@@ -73,11 +75,14 @@ void SoftmaxWithLossLayer<Dtype>::Forward_cpu(
       ++count;
     }
   }
+  Dtype* top_data = top[0]->mutable_cpu_data();
   if (normalize_) {
-    top[0]->mutable_cpu_data()[0] = loss / count;
+    *top_data = loss / count;
   } else {
-    top[0]->mutable_cpu_data()[0] = loss / outer_num_;
+    *top_data = loss / outer_num_;
   }
+  //caffe_Allreduce(top_data, top_data, 1, MPI_SUM);
+  //*top_data /= MPI::comm_size();
   if (top.size() == 2) {
     top[1]->ShareData(prob_);
   }
@@ -113,9 +118,9 @@ void SoftmaxWithLossLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
     // Scale gradient
     const Dtype loss_weight = top[0]->cpu_diff()[0];
     if (normalize_) {
-      caffe_scal(prob_.count(), loss_weight / count, bottom_diff);
+      caffe_scal(prob_.count(), loss_weight / count / MPI::comm_size(), bottom_diff);
     } else {
-      caffe_scal(prob_.count(), loss_weight / outer_num_, bottom_diff);
+      caffe_scal(prob_.count(), loss_weight / outer_num_ / MPI::comm_size(), bottom_diff);
     }
   }
 }

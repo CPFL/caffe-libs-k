@@ -1,0 +1,117 @@
+#!/bin/bash
+##**************************************************************
+##
+## Copyright (C) 1990-2010, Condor Team, Computer Sciences Department,
+## University of Wisconsin-Madison, WI.
+## 
+## Licensed under the Apache License, Version 2.0 (the "License"); you
+## may not use this file except in compliance with the License.  You may
+## obtain a copy of the License at
+## 
+##    http://www.apache.org/licenses/LICENSE-2.0
+## 
+## Unless required by applicable law or agreed to in writing, software
+## distributed under the License is distributed on an "AS IS" BASIS,
+## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+## See the License for the specific language governing permissions and
+## limitations under the License.
+##
+##**************************************************************
+
+# This is a script to run openmpi jobs under the Condor parallel universe
+# openmpi assumes that a full openmpi is pre-installed on all execute 
+# machines
+# A sample submit file might look like...
+#
+
+#universe = parallel
+#executable = openmpiscript
+#getenv=true
+#arguments = actual_mpi_job arg1 arg2 arg3
+#
+#should_transfer_files = yes
+#when_to_transfer_output = on_exit_or_evict
+#
+#output = o.$(NODE)
+#error  = e.$(NODE)
+#log    = l
+#
+#notification = never
+#machine_count = 8
+#queue
+
+export PYTHONPATH=$/home/dazzhe/caffe-libs-k-master/fast-rcnn-k/fast-rcnn/caffe-fast-rcnn/python:$PYTHONPATH
+export PATH=/home/dazzhe/k/anaconda2/bin:/home/dazzhe/install/bin:$PATH
+export LD_LIBRARY_PATH=/home/dazzhe/install/lib:/home/dazzhe/install/usr/local/lib:/opt/intel/mkl/lib/intel64:/opt/intel/lib/intel64:/home/dazzhe/caffe-libs-k-master/fast-rcnn-k/fast-rcnn/caffe-fast-rcnn/build/lib
+export CPLUS_INCLUDE_PATH=/home/dazzhe/install/include:$CPLUS_INCLUDE_PATH
+export HDF5_DIR=/home/dazzhe/install
+
+source /opt/intel/bin/compilervars.sh intel64
+source /home/dazzhe/install/openmpi/scripts/openmpi-1.10.4-intel-v16.0.3.sh
+_CONDOR_PROCNO=$_CONDOR_PROCNO
+_CONDOR_NPROCS=$_CONDOR_NPROCS
+echo $_CONDOR_PROCNO >&2
+#CONDOR_SSH=`condor_config_val libexec`
+#CONDOR_SSH=$CONDOR_SSH/condor_ssh
+CONDOR_SSH=/etc/condor/condor_ssh
+
+#SSHD_SH=`condor_config_val libexec`
+#SSHD_SH=$SSHD_SH/sshd.sh
+SSHD_SH=/etc/condor/sshd.sh
+
+. $SSHD_SH $_CONDOR_PROCNO $_CONDOR_NPROCS 
+
+# If not the head node, just sleep forever, to let the
+# sshds run
+if [ $_CONDOR_PROCNO -ne 0 ]
+then
+    wait
+    sshd_cleanup
+    exit 0
+fi
+#EXECUTABLE=$1
+#shift
+
+# the binary is copied but the executable flag is cleared.
+# so the script have to take care of this
+#chmod +x $EXECUTABLE
+
+CONDOR_CONTACT_FILE=$_CONDOR_SCRATCH_DIR/contact
+export CONDOR_CONTACT_FILE
+
+# The second field in the contact file is the machine name
+# that condor_ssh knows how to use
+sort -n -k 1 < $CONDOR_CONTACT_FILE | awk '{print $2}' > machines
+
+KMP_AFFINITY=verbose,granurality=fine,compact,0,0
+export KMP_AFFINITY
+OMP_NUM_THREADS=32
+export OMP_NUM_THREADS
+MKL_NUM_THREADS=32
+export MKL_NUM_THREADS
+NUM_MPI_PROCS=$_CONDOR_NPROCS
+#echo $LD_LIBRARY_PATH >&2
+
+TOOLS=/home/dazzhe/caffe-libs-k-master/fast-rcnn-k/fast-rcnn/caffe-fast-rcnn/build/tools
+
+## run the actual mpijob
+mpirun -x KMP_AFFINITY -x OMP_NUM_THREADS -x MKL_NUM_THREADS -display-map -bind-to board -npernode 1 -v --mca plm_rsh_agent $CONDOR_SSH --mca plm_rsh_no_tree_spawn true -n $NUM_MPI_PROCS -hostfile machines \
+$TOOLS/caffe train \
+    --solver=cifar10_full_solver.prototxt
+
+# reduce learning rate by factor of 10
+#mpirun -x KMP_AFFINITY -x OMP_NUM_THREADS -x MKL_NUM_THREADS -display-map -bind-to board -npernode 1 -v --mca plm_rsh_agent $CONDOR_SSH --mca plm_rsh_no_tree_spawn true -n $NUM_MPI_PROCS -hostfile machines \
+#$TOOLS/caffe train \
+#    --solver=cifar10_full_solver_lr1.prototxt \
+#    --snapshot=cifar10_full_iter_60000.solverstate
+
+# reduce learning rate by factor of 10
+#mpirun -x KMP_AFFINITY -x OMP_NUM_THREADS -x MKL_NUM_THREADS -display-map -bind-to board -npernode 1 -v --mca plm_rsh_agent $CONDOR_SSH --mca plm_rsh_no_tree_spawn true -n $NUM_MPI_PROCS -hostfile machines \
+#$TOOLS/caffe train \
+#    --solver=cifar10_full_solver_lr2.prototxt \
+#    --snapshot=cifar10_full_iter_65000.solverstate
+
+sshd_cleanup
+rm -f machines
+
+exit $?

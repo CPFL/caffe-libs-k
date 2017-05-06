@@ -11,6 +11,7 @@
 #include "caffe/common.hpp"
 #include "caffe/layer.hpp"
 #include "caffe/proto/caffe.pb.h"
+#include "caffe/util/mpi.hpp"
 
 namespace caffe {
 
@@ -81,6 +82,8 @@ class Net {
     Backward();
     return loss;
   }
+
+  void ReduceParams();
 
   /// @brief Updates the network weights based on the diff values computed.
   void Update();
@@ -255,6 +258,8 @@ class Net {
   size_t memory_used_;
   /// Whether to compute and display debug info for the net.
   bool debug_info_;
+  
+  MPI::Scheduler<Dtype>& scheduler;
 
   DISABLE_COPY_AND_ASSIGN(Net);
 };

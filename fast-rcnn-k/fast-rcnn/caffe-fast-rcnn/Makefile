@@ -162,7 +162,7 @@ ifneq ($(CPU_ONLY), 1)
 	LIBRARIES := cudart cublas curand
 endif
 LIBRARIES += glog gflags protobuf leveldb snappy \
-	lmdb boost_system boost_atomic hdf5_hl hdf5 m \
+	lmdb boost_system boost_atomic hdf5_hl hdf5 m\
 	opencv_core opencv_highgui opencv_imgproc gtest boost_date_time
 PYTHON_LIBRARIES := boost_python python2.7 boost_regex \
         boost_date_time boost_iostreams 
@@ -264,7 +264,7 @@ ifeq ($(FUJITSU), 1)
 	STATIC_LINK_COMMAND := -Bstatic $(STATIC_NAME)
 else ifneq (,$(findstring clang++,$(CXX)))
 	STATIC_LINK_COMMAND := -Wl,-force_load $(STATIC_NAME)
-else ifneq (,$(findstring g++,$(CXX)))
+else ifneq (,$(findstring mpiicpc,$(CXX)))
 	STATIC_LINK_COMMAND := -Wl,--whole-archive $(STATIC_NAME) -Wl,--no-whole-archive
 else
   # The following line must not be indented with a tab, since we are not inside a target
@@ -307,7 +307,7 @@ ifeq ($(BLAS), mkl)
 	# MKL
 	LIBRARIES += mkl_rt
 	COMMON_FLAGS += -DUSE_MKL
-	MKL_DIR ?= /opt/intel/mkl
+	MKL_DIR ?= /center/local/apl/cx/intel/mkl
 	BLAS_INCLUDE ?= $(MKL_DIR)/include
 	BLAS_LIB ?= $(MKL_DIR)/lib $(MKL_DIR)/lib/intel64
 else ifeq ($(BLAS), open)
@@ -349,11 +349,11 @@ CXXFLAGS += -MMD -MP
 
 # Complete build flags.
 COMMON_FLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
-CXXFLAGS += -Xg -pthread -Kfast -mt -fPIC -Kopenmp $(COMMON_FLAGS) $(WARNINGS)
+CXXFLAGS += -openmp -fPIC $(COMMON_FLAGS) $(WARNINGS)
 NVCCFLAGS += -ccbin=$(CXX) -Xcompiler -fPIC $(COMMON_FLAGS)
 # mex may invoke an older gcc that is too liberal with -Wuninitalized
 MATLAB_CXXFLAGS := $(CXXFLAGS) -Wno-uninitialized
-LINKFLAGS += -Xg -Kfast -pthread -mt -fPIC -Kopenmp $(COMMON_FLAGS) $(WARNINGS)
+LINKFLAGS += -openmp -fPIC $(COMMON_FLAGS) $(WARNINGS)
 
 USE_PKG_CONFIG ?= 0
 ifeq ($(USE_PKG_CONFIG), 1)
@@ -365,9 +365,9 @@ LDFLAGS += $(foreach librarydir,$(LIBRARY_DIRS),-L$(librarydir)) $(PKG_CONFIG) \
 		$(foreach library,$(LIBRARIES),-l$(library))
 ifdef OPENMP
 ifneq (,$(findstring icpc,$(CXX)))
-	OMP_OPT = -Kopenmp -Xg -mt -pthread -Kfast
+	OMP_OPT =
 else
-	OMP_OPT = -Kopenmp -Xg -mt -pthread -Kfast
+	OMP_OPT = 
 endif
 CXXFLAGS += $(OMP_OPT)
 LDFLAGS += $(OMP_OPT)

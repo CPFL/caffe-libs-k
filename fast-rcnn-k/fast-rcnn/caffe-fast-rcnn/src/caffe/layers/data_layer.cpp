@@ -13,6 +13,7 @@
 #include "caffe/util/io.hpp"
 #include "caffe/util/math_functions.hpp"
 #include "caffe/util/rng.hpp"
+#include "caffe/util/mpi.hpp"
 
 namespace caffe {
 
@@ -38,6 +39,9 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       cursor_->Next();
     }
   }
+  for (int i = 0; i < MPI::rank(); ++i) {
+    cursor_->Next();
+  }
   // Read a data point, and use it to initialize the top blob.
   Datum datum;
   datum.ParseFromString(cursor_->value());
@@ -49,17 +53,18 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   }
   // image
   int crop_size = this->layer_param_.transform_param().crop_size();
+  int batch_size = this->layer_param_.data_param().batch_size() / MPI::comm_size();
   if (crop_size > 0) {
-    top[0]->Reshape(this->layer_param_.data_param().batch_size(),
+    top[0]->Reshape(batch_size,
         datum.channels(), crop_size, crop_size);
-    this->prefetch_data_.Reshape(this->layer_param_.data_param().batch_size(),
+    this->prefetch_data_.Reshape(batch_size,
         datum.channels(), crop_size, crop_size);
     this->transformed_data_.Reshape(1, datum.channels(), crop_size, crop_size);
   } else {
     top[0]->Reshape(
-        this->layer_param_.data_param().batch_size(), datum.channels(),
+        batch_size, datum.channels(),
         datum.height(), datum.width());
-    this->prefetch_data_.Reshape(this->layer_param_.data_param().batch_size(),
+    this->prefetch_data_.Reshape(batch_size,
         datum.channels(), datum.height(), datum.width());
     this->transformed_data_.Reshape(1, datum.channels(),
       datum.height(), datum.width());
@@ -69,7 +74,7 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
       << top[0]->width();
   // label
   if (this->output_labels_) {
-    vector<int> label_shape(1, this->layer_param_.data_param().batch_size());
+    vector<int> label_shape(1, batch_size);
     top[1]->Reshape(label_shape);
     this->prefetch_label_.Reshape(label_shape);
   }
@@ -78,6 +83,7 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
 // This function is used to create a thread that prefetches the data.
 template <typename Dtype>
 void DataLayer<Dtype>::InternalThreadEntry() {
+
   CPUTimer batch_timer;
   batch_timer.Start();
   double read_time = 0;
@@ -87,7 +93,9 @@ void DataLayer<Dtype>::InternalThreadEntry() {
   CHECK(this->transformed_data_.count());
 
   // Reshape on single input batches for inputs of varying dimension.
-  const int batch_size = this->layer_param_.data_param().batch_size();
+  const int batch_size = this->layer_param_.data_param().batch_size() / MPI::comm_size();
+  CHECK_EQ(this->layer_param_.data_param().batch_size() % MPI::comm_size(), 0)
+    << "Invalid batch size.";
   const int crop_size = this->layer_param_.transform_param().crop_size();
   bool force_color = this->layer_param_.data_param().force_encoded_color();
   if (batch_size == 1 && crop_size == 0) {
@@ -148,10 +156,12 @@ void DataLayer<Dtype>::InternalThreadEntry() {
     }
     trans_time += timer.MicroSeconds();
     // go to the next iter
-    cursor_->Next();
-    if (!cursor_->valid()) {
-      DLOG(INFO) << "Restarting data prefetching from start.";
-      cursor_->SeekToFirst();
+    for (int i = 0; i < MPI::comm_size(); ++i) {
+      cursor_->Next();
+      if (!cursor_->valid()) {
+	DLOG(INFO) << "Restarting data prefetching from start.";
+	cursor_->SeekToFirst();
+      }
     }
   }
   batch_timer.Stop();

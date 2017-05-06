@@ -10,6 +10,8 @@
 #include "caffe/layer_factory.hpp"
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/device_alternate.hpp"
+#include "caffe/util/mpi_functions.hpp"
+#include "caffe/util/mpi.hpp"
 
 namespace caffe {
 
@@ -64,6 +66,7 @@ class Layer {
     LayerSetUp(bottom, top);
     Reshape(bottom, top);
     SetLossWeights(top);
+    MPIShareInitParams();
   }
 
   /**
@@ -293,6 +296,7 @@ class Layer {
   Phase phase_;
   /** The vector that stores the learnable parameters as a set of blobs. */
   vector<shared_ptr<Blob<Dtype> > > blobs_;
+
   /** Vector indicating whether to compute the diff of each param blob. */
   vector<bool> param_propagate_down_;
 
@@ -394,6 +398,12 @@ class Layer {
         caffe_set(count, loss_weight, loss_multiplier);
       }
     }
+  }
+
+  inline void MPIShareInitParams() {
+    for (int i = 0; i < blobs_.size(); ++i) {
+      caffe_Bcast<Dtype>(blobs_[i]->mutable_cpu_data(), blobs_[i]->count(), 0);
+    }	
   }
 
   DISABLE_COPY_AND_ASSIGN(Layer);

@@ -17,6 +17,8 @@ TODO:
 #include "caffe/data_layers.hpp"
 #include "caffe/layer.hpp"
 #include "caffe/util/io.hpp"
+#include "caffe/util/mpi.hpp"
+#include "caffe/util/mpi_functions.hpp"
 
 namespace caffe {
 
@@ -101,7 +103,6 @@ void HDF5DataLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
   for (int i = 0; i < num_files_; i++) {
     file_permutation_[i] = i;
   }
-
   // Shuffle if needed.
   if (this->layer_param_.hdf5_data_param().shuffle()) {
     std::random_shuffle(file_permutation_.begin(), file_permutation_.end());
@@ -109,10 +110,11 @@ void HDF5DataLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
 
   // Load the first HDF5 file and initialize the line counter.
   LoadHDF5FileData(hdf_filenames_[file_permutation_[current_file_]].c_str());
-  current_row_ = 0;
-
+  current_row_ = MPI::rank();
   // Reshape blobs.
-  const int batch_size = this->layer_param_.hdf5_data_param().batch_size();
+  // Each node has partial batch.
+  const int batch_size = this->layer_param_.hdf5_data_param().batch_size() / MPI::comm_size();
+  LOG(INFO) << batch_size;
   const int top_size = this->layer_param_.top_size();
   vector<int> top_shape;
   for (int i = 0; i < top_size; ++i) {
@@ -128,12 +130,11 @@ void HDF5DataLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
 template <typename Dtype>
 void HDF5DataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
-  const int batch_size = this->layer_param_.hdf5_data_param().batch_size();
-  for (int i = 0; i < batch_size; ++i, ++current_row_) {
-    if (current_row_ == hdf_blobs_[0]->shape(0)) {
+  const int batch_size = this->layer_param_.hdf5_data_param().batch_size() / MPI::comm_size();
+  for (int i = 0; i < batch_size; ++i) {
+    if (current_row_ >= hdf_blobs_[0]->shape(0)) {
       if (num_files_ > 1) {
-        ++current_file_;
-        if (current_file_ == num_files_) {
+        if (current_file_ >= num_files_) {
           current_file_ = 0;
           if (this->layer_param_.hdf5_data_param().shuffle()) {
             std::random_shuffle(file_permutation_.begin(),
@@ -143,10 +144,14 @@ void HDF5DataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
         }
         LoadHDF5FileData(
             hdf_filenames_[file_permutation_[current_file_]].c_str());
+	++current_file_;
       }
-      current_row_ = 0;
-      if (this->layer_param_.hdf5_data_param().shuffle())
+      current_row_ = MPI::rank();
+      if (this->layer_param_.hdf5_data_param().shuffle()) {
         std::random_shuffle(data_permutation_.begin(), data_permutation_.end());
+	// Unify data permutation in each node.
+	MPI_Bcast(&data_permutation_[0], num_files_, MPI_INT, 0, MPI_COMM_WORLD);
+      }
     }
     for (int j = 0; j < this->layer_param_.top_size(); ++j) {
       int data_dim = top[j]->count() / top[j]->shape(0);
@@ -154,7 +159,9 @@ void HDF5DataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
           &hdf_blobs_[j]->cpu_data()[data_permutation_[current_row_]
             * data_dim], &top[j]->mutable_cpu_data()[i * data_dim]);
     }
+    current_row_ += MPI::comm_size();
   }
+  //MPI_Barrier(MPI_COMM_WORLD);
 }
 
 #ifdef CPU_ONLY

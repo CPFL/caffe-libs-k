@@ -12,19 +12,26 @@
 #include "caffe/util/insert_splits.hpp"
 #include "caffe/util/io.hpp"
 #include "caffe/util/math_functions.hpp"
+#include "caffe/util/mpi_functions.hpp"
 #include "caffe/util/upgrade_proto.hpp"
+#include "caffe/util/timer.hpp"
+#include "caffe/util/mpi.hpp"
 
 #include "caffe/test/test_caffe_main.hpp"
+
+static Timer timer;
 
 namespace caffe {
 
 template <typename Dtype>
-Net<Dtype>::Net(const NetParameter& param) {
+Net<Dtype>::Net(const NetParameter& param)
+  : scheduler(MPI::Scheduler<Dtype>::getInstance()) {
   Init(param);
 }
 
 template <typename Dtype>
-Net<Dtype>::Net(const string& param_file, Phase phase) {
+Net<Dtype>::Net(const string& param_file, Phase phase)
+  : scheduler(MPI::Scheduler<Dtype>::getInstance()) {
   NetParameter param;
   ReadNetParamsFromTextFileOrDie(param_file, &param);
   param.mutable_state()->set_phase(phase);
@@ -136,6 +143,11 @@ void Net<Dtype>::Init(const NetParameter& in_param) {
       need_backward |= param_need_backward;
       layers_[layer_id]->set_param_propagate_down(param_id,
                                                   param_need_backward);
+      if (phase_ == TRAIN) {
+	scheduler.EntryRequests(layers_[layer_id]->blobs()[param_id]->count(),
+				layers_[layer_id]->blobs()[param_id]->mutable_cpu_diff(),
+				layer_names_[layer_id]);
+      }
     }
     for (int param_id = 0; param_id < num_param_blobs; ++param_id) {
       AppendParam(param, layer_id, param_id);
@@ -216,6 +228,10 @@ void Net<Dtype>::Init(const NetParameter& in_param) {
   debug_info_ = param.debug_info();
   LOG(INFO) << "Network initialization done.";
   LOG(INFO) << "Memory required for data: " << memory_used_ * sizeof(Dtype);
+
+  if (phase_ == TRAIN) {
+    scheduler.Start();
+  }
 }
 
 template <typename Dtype>
@@ -470,8 +486,10 @@ Dtype Net<Dtype>::ForwardFromTo(int start, int end) {
   }
   for (int i = start; i <= end; ++i) {
     // LOG(ERROR) << "Forwarding " << layer_names_[i];
+    //if (MPI::rank() == 0) timer.Start(i);
     layers_[i]->Reshape(bottom_vecs_[i], top_vecs_[i]);
     Dtype layer_loss = layers_[i]->Forward(bottom_vecs_[i], top_vecs_[i]);
+    //if (MPI::rank() == 0) timer.Stop(i, 10, layer_names_[i]);
     loss += layer_loss;
     if (debug_info_) { ForwardDebugInfo(i); }
 
@@ -549,11 +567,22 @@ void Net<Dtype>::BackwardFromTo(int start, int end) {
   CHECK_LT(start, layers_.size());
   for (int i = start; i >= end; --i) {
     if (layer_need_backward_[i]) {
-      layers_[i]->Backward(
-          top_vecs_[i], bottom_need_backward_[i], bottom_vecs_[i]);
+      //if (MPI::rank() == 0) timer.Start(i+layers_.size()+2);
+      layers_[i]->Backward(top_vecs_[i],
+			   bottom_need_backward_[i],
+			   bottom_vecs_[i]);
+      
+      //if (MPI::rank() == 0)
+      //timer.Stop(i+layers_.size()+2, 10, layer_names_[i]);
       if (debug_info_) { BackwardDebugInfo(i); }
     }
   }
+  //if (MPI::rank() == 0) timer.Start(30);
+  for (int i = start; i >= end; --i) {
+    while (!scheduler.CheckRequest(layer_names_[i])) {};
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  //if (MPI::rank() == 0) timer.Stop(30, 20, "mpiwait");
 }
 
 template <typename Dtype>
@@ -768,7 +797,17 @@ void Net<Dtype>::Update() {
     case Caffe::CPU:
       this_diff = params_[i]->cpu_diff();
       owner_diff = params_[param_owners_[i]]->mutable_cpu_diff();
-      caffe_add(count, this_diff, owner_diff, owner_diff);
+      if (count >= 2000) {
+#pragma omp parallel for
+	for (int c = 0; c < count; ++c) {
+	  owner_diff[c] += this_diff[c];
+	}
+      } else {
+	for (int c = 0; c < count; ++c) {
+	  owner_diff[c] += this_diff[c];
+	}
+      }
+      //caffe_add(count, this_diff, owner_diff, owner_diff);
       break;
 #ifndef CPU_ONLY
     case Caffe::GPU:

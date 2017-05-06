@@ -333,6 +333,7 @@ message LayerParameter {
   optional TanHParameter tanh_param = 127;
   optional ThresholdParameter threshold_param = 128;
   optional WindowDataParameter window_data_param = 129;
+  optional string sharing_method = 132 [default = "data"];
 }
 
 // Message that stores parameters used to apply transformation
@@ -430,6 +431,7 @@ message ConvolutionParameter {
     CUDNN = 2;
   }
   optional Engine engine = 15 [default = DEFAULT];
+  optional bool pipeline = 16 [default = false];
 }
 
 // Message that stores parameters used by DataLayer

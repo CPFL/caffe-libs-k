@@ -4,6 +4,8 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <xmmintrin.h>
+#include <immintrin.h>
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
@@ -46,6 +48,12 @@ class BaseConvolutionLayer : public Layer<Dtype> {
   void weight_cpu_gemm(const Dtype* input, const Dtype* output, Dtype*
       weights);
   void backward_cpu_bias(Dtype* bias, const Dtype* input);
+  void forward_cpu_pipelined(const Dtype* input, const Dtype* weights,
+			     Dtype* output, const Dtype* bias, int num, bool skip_im2col = false);
+  void backward_cpu_pipelined(const Dtype* input, const Dtype* weights,
+      Dtype* output);
+  void weight_cpu_pipelined(const Dtype* input, const Dtype* output, Dtype*
+      weights);
 
 #ifndef CPU_ONLY
   void forward_gpu_gemm(const Dtype* col_input, const Dtype* weights,
@@ -230,7 +238,7 @@ template <typename Dtype>
 class CuDNNConvolutionLayer : public ConvolutionLayer<Dtype> {
  public:
   explicit CuDNNConvolutionLayer(const LayerParameter& param)
-      : ConvolutionLayer<Dtype>(param), handles_setup_(false) {}
+    : ConvolutionLayer<Dtype>(param), handles_setup_(false) {}
   virtual void LayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,

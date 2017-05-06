@@ -143,11 +143,25 @@ void Blob<Dtype>::Update() {
   // We will perform update based on where the data is located.
   switch (data_->head()) {
   case SyncedMemory::HEAD_AT_CPU:
-    // perform computation on CPU
-    caffe_axpy<Dtype>(count_, Dtype(-1),
-        static_cast<const Dtype*>(diff_->cpu_data()),
-        static_cast<Dtype*>(data_->mutable_cpu_data()));
-    break;
+    {
+      // perform computation on CPU
+      const Dtype *diff = static_cast<const Dtype*>(diff_->cpu_data());
+      Dtype *para = static_cast<Dtype*>(data_->mutable_cpu_data());
+      if (count_ >= 2000) {
+#pragma omp parallel for
+	for (int c = 0; c < count_; ++c) {
+	  para[c] -= diff[c];
+	}
+      } else {
+	for (int c = 0; c < count_; ++c) {
+	  para[c] -= diff[c];
+	}
+      }
+      // caffe_axpy<Dtype>(count_, Dtype(-1),
+      //		      static_cast<const Dtype*>(diff_->cpu_data()),
+      //		      static_cast<Dtype*>(data_->mutable_cpu_data()));
+      break;
+    }
   case SyncedMemory::HEAD_AT_GPU:
   case SyncedMemory::SYNCED:
 #ifndef CPU_ONLY
@@ -485,6 +499,27 @@ void Blob<Dtype>::ToProto(BlobProto* proto, bool write_diff) const {
     }
   }
 }
+
+  /*template <typename Dtype>
+void Blob<Dtype>::Ialltoall(string mode) {
+  //alloc_reqs(reqs_, num());
+  int sendcount = count()/num()/MPI::comm_size();
+  Dtype* recvbuf;
+  if (mode == string("data")) {
+    recvbuf = mutable_cpu_data();
+  } else if (mode == string("diff")) {
+    recvbuf = mutable_cpu_diff();
+  } else {
+    LOG(FATAL) << "Unkown data mode.";
+  }
+
+  for (int i = 0; i < num(); ++i) {
+    //caffe_Ialltoall<Dtype>(recvbuf, sendcount, &reqs_[i]);
+    caffe_Alltoall<Dtype>(recvbuf, sendcount);
+    recvbuf += offset(1);
+  }
+}
+  */
 
 INSTANTIATE_CLASS(Blob);
 template class Blob<int>;

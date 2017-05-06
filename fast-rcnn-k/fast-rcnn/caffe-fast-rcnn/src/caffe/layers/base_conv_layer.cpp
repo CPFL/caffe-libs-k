@@ -1,10 +1,14 @@
 #include <vector>
-
+#include <mkl.h>
+#include <omp.h>
 #include "caffe/filler.hpp"
 #include "caffe/layer.hpp"
 #include "caffe/util/im2col.hpp"
 #include "caffe/util/math_functions.hpp"
 #include "caffe/vision_layers.hpp"
+#include "caffe/util/timer.hpp"
+
+Timer timer;
 
 namespace caffe {
 
@@ -143,8 +147,10 @@ void BaseConvolutionLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
   // it goes lazily unused to save memory.
   if (reverse_dimensions()) {
     col_buffer_.Reshape(1, kernel_dim_, height_, width_);
+    caffe_set(col_offset_, Dtype(0), col_buffer_.mutable_cpu_data());
   } else {
     col_buffer_.Reshape(1, kernel_dim_, height_out_, width_out_);
+    caffe_set(col_offset_, Dtype(0), col_buffer_.mutable_cpu_data());
   }
   // Set up the all ones "bias multiplier" for adding biases by BLAS
   if (bias_term_) {
@@ -157,7 +163,7 @@ void BaseConvolutionLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
 
 template <typename Dtype>
 void BaseConvolutionLayer<Dtype>::forward_cpu_gemm(const Dtype* input,
-    const Dtype* weights, Dtype* output, bool skip_im2col) {
+      const Dtype* weights, Dtype* output, bool skip_im2col) {
   const Dtype* col_buff = input;
   if (!is_1x1_) {
     if (!skip_im2col) {
@@ -166,10 +172,136 @@ void BaseConvolutionLayer<Dtype>::forward_cpu_gemm(const Dtype* input,
     col_buff = col_buffer_.cpu_data();
   }
   for (int g = 0; g < group_; ++g) {
-    caffe_cpu_gemm<Dtype>(CblasNoTrans, CblasNoTrans, conv_out_channels_ /
-        group_, conv_out_spatial_dim_, kernel_dim_ / group_,
-        (Dtype)1., weights + weight_offset_ * g, col_buff + col_offset_ * g,
-        (Dtype)0., output + output_offset_ * g);
+    caffe_cpu_gemm<Dtype>(CblasNoTrans, CblasNoTrans,
+			  conv_out_channels_ / group_,
+			  conv_out_spatial_dim_,
+			  kernel_dim_ / group_,
+			  (Dtype)1.,
+			  weights + weight_offset_ * g,
+			  col_buff + col_offset_ * g,
+			  (Dtype)0.,
+			  output + output_offset_ * g);
+  }
+}
+
+  /*template <typename Dtype>
+static inline gemm_partial2<Dtype>(Dtype* col_data, Dtype* output_data, int curr_height, int h_size) {
+  caffe_gemm<Dtype>(CblasNoTrans, CblasNoTrans,				\
+		    conv_out_channels_ / group_,			\
+		    conv_out_spatial_dim_*(h_size)/height_out_,		\
+		    kernel_dim_ / group_,				\
+		    (Dtype)1.,						\
+		    weights + weight_offset_ * g, kernel_dim_/group_,	\
+		    col_data + col_offset_/height_out_*(curr_height)	\
+		    + col_offset_ * g,					\
+		    conv_out_spatial_dim_*(h_size)/height_out_,		\
+		    (Dtype)1.,						\
+		    output_data + width_out_*(curr_height)		\
+		    + output_offset_ * g, conv_out_spatial_dim_);
+}*/
+
+#define im2col_partial(im_data, col_data, curr_height)			\
+  for (int c = 0; c < kernel_dim_; ++c) {				\
+    int w_offset = c % kernel_w_;					\
+    int h_offset = (c / kernel_w_) % kernel_h_;				\
+    int c_im = c / kernel_h_ / kernel_w_;				\
+    int h_pad = (curr_height) * stride_h_ - pad_h_ + h_offset;		\
+    for (int w = 0; w < width_out_; ++w) {				\
+    int w_pad = w * stride_w_ - pad_w_ + w_offset;			\
+      if (h_pad >= 0 && h_pad < height_ && w_pad >= 0 && w_pad < width_) \
+	col_data[(curr_height)*kernel_dim_*width_out_ + c*width_out_ + w] = \
+	  im_data[(c_im * height_ + h_pad) * width_ + w_pad];		\
+      else								\
+	col_data[(curr_height)*kernel_dim_*width_out_ + c*width_out_ + w] = 0; \
+    }									\
+  }
+
+#define gemm_partial(col_data, output_data, curr_height, h_size)	\
+  caffe_gemm<Dtype>(CblasNoTrans, CblasNoTrans,				\
+		    conv_out_channels_ / group_,			\
+		    conv_out_spatial_dim_*(h_size)/height_out_,		\
+		    kernel_dim_ / group_,				\
+		    (Dtype)1.,						\
+		    weights + weight_offset_ * g, kernel_dim_/group_,	\
+		    col_data + col_offset_/height_out_*(curr_height)	\
+		    + col_offset_ * g,					\
+		    conv_out_spatial_dim_*(h_size)/height_out_,		\
+		    (Dtype)1.,						\
+		    output_data + width_out_*(curr_height)		\
+		    + output_offset_ * g, conv_out_spatial_dim_);
+  
+#define bias_partial(top_data, bias, h)					\
+  for (int c = 0; c < conv_out_channels_; ++c) {			\
+    for (int ind = 0; ind < width_out_; ++ind) {			\
+      top_data[c*conv_out_spatial_dim_ + width_out_*(h)+ind] = bias[c];	\
+    }									\
+  }
+
+
+template <typename Dtype>
+void BaseConvolutionLayer<Dtype>::forward_cpu_pipelined(const Dtype* input,
+  const Dtype* weights, Dtype* output, const Dtype* bias, int num, bool skip_im2col) {
+  //int h_size = 2;
+  for (int g = 0; g < group_; ++g) {
+    //timer.Start(1);
+    int counter = 0;
+#pragma omp parallel
+    {
+      int th = omp_get_thread_num();
+      int ths = omp_get_num_threads();
+      //printf("%d:%d\n", th, ths);
+      Dtype* col_buff = col_buffer_.mutable_cpu_data();
+      const Dtype* input_data = input;
+      Dtype* output_data = output;
+      CHECK_EQ(height_out_%(ths/2), 0)
+	<< "Can't make pipeline.";
+      int h_start = height_out_/(ths/2)*(th%(ths/2));
+      int h_end = height_out_/(ths/2)*(th%(ths/2)+1);
+      //printf("%d %d\n", h_start, h_end);
+      int input_size = height_ * width_ * conv_in_channels_;
+      int output_size = height_out_ * width_out_ * conv_out_channels_;
+      //if (th == 0) timer.Start(3);
+      im2col_partial(input_data, col_buff, h_start);
+      bias_partial(output_data, bias, h_start);
+#pragma omp barrier
+      //if (th == 0) timer.Stop(3, 1000, "convcol1");
+      for (int n = 0; n < num; ++n) {
+	for (int h = h_start; h < h_end-1; ++h) {
+	  if (th == 0 && height_==60) timer.Start(12);
+	  //printf("%d:%d\n", n, h);
+	  if (th < ths/2) {
+	    if (th == 0 && height_==60) timer.Start(4);
+	    gemm_partial(col_buff, output_data, h, 1);
+	    if (th == 0 && height_==60) timer.Stop(4, 1000, "convblas");
+	  } else {
+	    if (th == 10 && height_==60) timer.Start(5);
+	    im2col_partial(input_data, col_buff, h+1);
+	    bias_partial(output_data, bias, h+1);
+	    if (th == 10 && height_==60) timer.Stop(5, 1000, "convcol2");
+	  }
+#pragma omp barrier
+	  if (th == 0 && height_==60) timer.Stop(12, 1000, "conv100");
+	}
+	input_data += input_size;
+	if (n < num-1) {
+	  if (th < ths/2) {
+	    gemm_partial(col_buff, output_data, h_end-1, 1);
+	  } else {
+	    im2col_partial(input_data, col_buff, h_start);
+	    Dtype* o = output_data+output_size;
+	    bias_partial(o, bias, h_start);
+	  }
+#pragma omp barrier
+	} else {
+	  if (th < ths/2) {
+	    gemm_partial(col_buff, output_data, h_end-1, 1);
+	  }
+	}
+	output_data += output_size;
+      }
+    }
+    //printf("%d : %d\n", height_out_, counter);
+    //timer.Stop(1, 1000, "conv");
   }
 }
 
@@ -179,6 +311,108 @@ void BaseConvolutionLayer<Dtype>::forward_cpu_bias(Dtype* output,
   caffe_cpu_gemm<Dtype>(CblasNoTrans, CblasNoTrans, num_output_,
       height_out_ * width_out_, 1, (Dtype)1., bias, bias_multiplier_.cpu_data(),
       (Dtype)1., output);
+}
+
+#define gemm_partial2(curr_height, h_size)				\
+  caffe_gemm<Dtype>(CblasTrans, CblasNoTrans,				\
+		    kernel_dim_ / group_,				\
+		    conv_out_spatial_dim_*(h_size)/height_out_,		\
+		    conv_out_channels_ / group_,			\
+		    (Dtype)1.,						\
+		    weights + weight_offset_ * g,			\
+		    kernel_dim_ / group_,				\
+		    output_data +width_out_*(curr_height) + output_offset_ * g, \
+		    conv_out_spatial_dim_,				\
+		    (Dtype)0.,						\
+		    col_buff + width_out_*(curr_height) + col_offset_ * g, \
+		    conv_out_spatial_dim_);
+
+#define col2im_partial(data_col, data_im, h)				\
+  int height_col = (height_ + 2 * pad_h_ - kernel_h_) / stride_h_ + 1;	\
+  int width_col = (width_ + 2 * pad_w_ - kernel_w_) / stride_w_ + 1;	\
+  int channels_col = conv_in_channels_ * kernel_h_ * kernel_w_;		\
+  for (int c = 0; c < channels_col; ++c) {				\
+    int w_offset = c % kernel_w_;					\
+    int h_offset = (c / kernel_w_) % kernel_h_;				\
+    int c_im = c / kernel_h_ / kernel_w_;				\
+    int h_pad = (h) * stride_h_ - pad_h_ + h_offset;			\
+    for (int w = 0; w < width_col; ++w) {				\
+      int w_pad = w * stride_w_ - pad_w_ + w_offset;			\
+      if (h_pad >= 0 && h_pad < height_ && w_pad >= 0 && w_pad < width_) \
+	data_im[(c_im * height_ + h_pad) * width_ + w_pad] +=		\
+	  data_col[(c * height_col + (h)) * width_col + w];		\
+    }									\
+  }
+
+
+template <typename Dtype>
+void BaseConvolutionLayer<Dtype>::backward_cpu_pipelined(const Dtype* output,
+    const Dtype* weights, Dtype* input) {
+  Dtype* col_buff = col_buffer_.mutable_cpu_data();
+  caffe_set(height_ * width_ * conv_in_channels_ * num_, Dtype(0), input);
+  for (int g = 0; g < group_; ++g) {
+    int counter = 0;
+#pragma omp parallel
+    {
+      int th = omp_get_thread_num();
+      int ths = omp_get_num_threads();
+      Dtype* col_buff = col_buffer_.mutable_cpu_data();
+      Dtype* input_data = input;
+      const Dtype* output_data = output;
+      int h_start = height_out_/(ths/2)*(th%4);
+      int h_end = height_out_/(ths/2)*(th%4+1);
+      int input_size = height_ * width_ * conv_in_channels_;
+      int output_size = height_out_ * width_out_ * conv_out_channels_;
+      //if (th == 0) timer.Start(3);
+      gemm_partial2(h_start, 1);
+      //if (th == 0) timer.Stop(3, 1000, "convcol1");
+      for (int n = 0; n < num_; ++n) {
+	for (int h = h_start; h < h_end-1; ++h) {
+	  if (th < 4) {
+	    if (th == 0 && height_ == 60) timer.Start(14);
+	    col2im_partial(col_buff, input_data, h);
+	    if (th == 0 && height_ == 60) timer.Stop(14, 100, "backcol2");
+	  } else {
+	    if (th == 10 && height_ == 60) timer.Start(15);
+	    gemm_partial2(h+1, 1);
+	    if (th == 10 && height_ == 60) timer.Stop(15, 1000, "backblas");
+	  }
+#pragma omp barrier
+	}
+	input_data += input_size;
+	if (n < num_-1) {
+	  if (th < 4) {
+	    col2im_partial(col_buff, input_data, h_end-1);
+	    output_data += output_size;
+	  } else {
+	    output_data += output_size;
+	    gemm_partial2(h_start, 1);
+	  }
+#pragma omp barrier
+	} else {
+	  if (th < 4) {
+	    col2im_partial(col_buff, input_data, h_end-1);
+	  }
+	}
+      }
+    }
+  }
+}
+
+template <typename Dtype>
+void BaseConvolutionLayer<Dtype>::weight_cpu_pipelined(const Dtype* input,
+				    const Dtype* output, Dtype* weights) {
+  const Dtype* col_buff = input;
+  if (!is_1x1_) {
+    conv_im2col_cpu(input, col_buffer_.mutable_cpu_data());
+    col_buff = col_buffer_.cpu_data();
+  }
+  for (int g = 0; g < group_; ++g) {
+    caffe_cpu_gemm<Dtype>(CblasNoTrans, CblasTrans, conv_out_channels_ / group_,
+        kernel_dim_ / group_, conv_out_spatial_dim_,
+	(Dtype)1., output + output_offset_ * g, col_buff + col_offset_ * g,
+        (Dtype)1., weights + weight_offset_ * g);
+  }
 }
 
 template <typename Dtype>

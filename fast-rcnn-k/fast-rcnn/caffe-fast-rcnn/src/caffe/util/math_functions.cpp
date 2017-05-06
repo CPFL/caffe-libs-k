@@ -1,6 +1,6 @@
 #include <boost/math/special_functions/next.hpp>
 #include <boost/random.hpp>
-
+#include <omp.h>
 #include <limits>
 
 #include "caffe/common.hpp"
@@ -31,6 +31,24 @@ void caffe_cpu_gemm<double>(const CBLAS_TRANSPOSE TransA,
       ldb, beta, C, N);
 }
 
+template<>
+void caffe_gemm<float>(const CBLAS_TRANSPOSE TransA,
+    const CBLAS_TRANSPOSE TransB, const int M, const int N, const int K,
+    const float alpha, const float* A, const int lda,
+    const float* B, const int ldb, const float beta, float* C, const int ldc) {
+  cblas_sgemm(CblasRowMajor, TransA, TransB, M, N, K, alpha, A, lda, B,
+      ldb, beta, C, ldc);
+}
+
+template<>
+void caffe_gemm<double>(const CBLAS_TRANSPOSE TransA,
+    const CBLAS_TRANSPOSE TransB, const int M, const int N, const int K,
+    const double alpha, const double* A, const int lda,
+    const double* B, const int ldb, const double beta, double* C, const int ldc) {
+  cblas_dgemm(CblasRowMajor, TransA, TransB, M, N, K, alpha, A, lda, B,
+      ldb, beta, C, ldc);
+}
+
 template <>
 void caffe_cpu_gemv<float>(const CBLAS_TRANSPOSE TransA, const int M,
     const int N, const float alpha, const float* A, const float* x,
@@ -43,6 +61,16 @@ void caffe_cpu_gemv<double>(const CBLAS_TRANSPOSE TransA, const int M,
     const int N, const double alpha, const double* A, const double* x,
     const double beta, double* y) {
   cblas_dgemv(CblasRowMajor, TransA, M, N, alpha, A, N, x, 1, beta, y, 1);
+}
+
+template<>
+float caffe_dot<float>(const int M, const float* A, const int X, const float* B, const int Y) {
+  return cblas_sdot(M, A, X, B, Y);
+}
+
+template<>
+double caffe_dot<double>(const int M, const double* A, const int X, const double* B, const int Y) {
+  return cblas_ddot(M, A, X, B, Y);
 }
 
 template <>
@@ -93,7 +121,17 @@ void caffe_copy(const int N, const Dtype* X, Dtype* Y) {
       NO_GPU;
 #endif
     } else {
-      memcpy(Y, X, sizeof(Dtype) * N);  // NOLINT(caffe/alt_fn)
+      if (N < 2000) {
+	memcpy(Y, X, sizeof(Dtype) * N);  // NOLINT(caffe/alt_fn)
+      } else {
+#pragma omp parallel
+	{
+	  int th = omp_get_thread_num();
+	  int ths = omp_get_num_threads();
+	  int size = N/ths;
+	  memcpy(Y+th*size, X+th*size, sizeof(Dtype) * size);  // NOLINT(caffe/alt_fn)
+	}
+      }
     }
   }
 }
