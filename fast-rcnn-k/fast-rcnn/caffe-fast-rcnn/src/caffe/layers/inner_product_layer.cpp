@@ -287,13 +287,7 @@ void InnerProductLayer<Dtype>::Backward_cpu_data_parallelized(const vector<Blob<
     // Gradient with respect to weight
     caffe_cpu_gemm<Dtype>(CblasTrans, CblasNoTrans, N_, K_, M_, (Dtype)1.,
         top_diff, bottom_data, (Dtype)0., this->blobs_[0]->mutable_cpu_diff());
-    if (MPI::rank() == 0 && layer_name == string("ip1")) {
-      timer.Start(0);
-    }
     scheduler.SendRequest(layer_name, 0);
-    if (MPI::rank() == 0 && layer_name == string("ip1")) {
-      timer.Stop(0, 10, string("ip1send1"));
-    }
     //this->blobs_[0]->Iallreduce(string("diff"));
   }
   if (bias_term_ && this->param_propagate_down_[1]) {
@@ -302,13 +296,7 @@ void InnerProductLayer<Dtype>::Backward_cpu_data_parallelized(const vector<Blob<
     caffe_cpu_gemv<Dtype>(CblasTrans, M_, N_, (Dtype)1., top_diff,
         bias_multiplier_.cpu_data(), (Dtype)0.,
         this->blobs_[1]->mutable_cpu_diff());
-    if (MPI::rank() == 0 && layer_name == string("ip1")) {
-      timer.Start(1);
-    }
     scheduler.SendRequest(layer_name, 1);
-    if (MPI::rank() == 0 && layer_name == string("ip1")) {
-      timer.Stop(1, 10, string("ip1send2"));
-    }
     //this->blobs_[1]->Iallreduce(string("diff"));
   }
   if (propagate_down[0]) {

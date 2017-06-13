@@ -113,8 +113,10 @@ void HDF5DataLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
   current_row_ = MPI::rank();
   // Reshape blobs.
   // Each node has partial batch.
-  const int batch_size = this->layer_param_.hdf5_data_param().batch_size() / MPI::comm_size();
-  LOG(INFO) << batch_size;
+  int batch_size = this->layer_param_.hdf5_data_param().batch_size() / MPI::comm_size();
+  if (this->layer_param_.hdf5_data_param().batch_size() % MPI::comm_size() > MPI::rank())
+    batch_size++;
+  LOG(INFO) << "Batch size of rank " << MPI::rank() << " = " << batch_size;
   const int top_size = this->layer_param_.top_size();
   vector<int> top_shape;
   for (int i = 0; i < top_size; ++i) {
@@ -130,7 +132,9 @@ void HDF5DataLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
 template <typename Dtype>
 void HDF5DataLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
-  const int batch_size = this->layer_param_.hdf5_data_param().batch_size() / MPI::comm_size();
+  int batch_size = this->layer_param_.hdf5_data_param().batch_size() / MPI::comm_size();
+  if (this->layer_param_.hdf5_data_param().batch_size() % MPI::comm_size() > MPI::rank())
+    batch_size++;
   for (int i = 0; i < batch_size; ++i) {
     if (current_row_ >= hdf_blobs_[0]->shape(0)) {
       if (num_files_ > 1) {

@@ -4,8 +4,8 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include <xmmintrin.h>
-#include <immintrin.h>
+//#include <xmmintrin.h>
+//#include <immintrin.h>
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
@@ -116,6 +116,7 @@ class BaseConvolutionLayer : public Layer<Dtype> {
   int output_offset_;
 
   Blob<Dtype> col_buffer_;
+  Dtype* col_in_pipe_;
   Blob<Dtype> bias_multiplier_;
 };
 

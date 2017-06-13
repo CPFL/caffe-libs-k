@@ -1,73 +1,73 @@
 snappy-sinksource.lo: snappy-sinksource.cc \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../lib/FCC.pre \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/string.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_prolog.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/features.h \
-  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/features.h \
-  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/cdefs.h \
-  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/wordsize.h \
-  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs.h \
-  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs-64.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_stlport_version.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl_user_config.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_site_config.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stlcomp.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_fujitsu.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_confix.h \
-  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/string.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stddef.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stddef.h \
-  /opt/FJSVXosDevkit/sparc64fx/target/usr/include/xlocale.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_epilog.h \
-  /opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat_post.h \
+  /opt/FJSVmxlang/bin/../lib/FCC.pre \
+  /opt/FJSVmxlang/bin/../include/c++/std/string.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/stl/_prolog.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/stl/_config.h \
+  /opt/FJSVmxlang/bin/../include/features.h \
+  /opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/features.h \
+  /opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/sys/cdefs.h \
+  /opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/bits/wordsize.h \
+  /opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/gnu/stubs.h \
+  /opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/gnu/stubs-64.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/stl/_stlport_version.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/stl_user_config.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/stl/_config_compat.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/stl/_site_config.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/config/stlcomp.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/config/stl_fujitsu.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/config/stl_confix.h \
+  /opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/string.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/stddef.h \
+  /opt/FJSVmxlang/bin/../include/c++/../stddef.h \
+  /opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/xlocale.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/stl/_epilog.h \
+  /opt/FJSVmxlang/bin/../include/c++/std/stl/_config_compat_post.h \
   snappy-sinksource.h
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../lib/FCC.pre:
+/opt/FJSVmxlang/bin/../lib/FCC.pre:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/string.h:
+/opt/FJSVmxlang/bin/../include/c++/std/string.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_prolog.h:
+/opt/FJSVmxlang/bin/../include/c++/std/stl/_prolog.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config.h:
+/opt/FJSVmxlang/bin/../include/c++/std/stl/_config.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/features.h:
+/opt/FJSVmxlang/bin/../include/features.h:
 
-/opt/FJSVXosDevkit/sparc64fx/target/usr/include/features.h:
+/opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/features.h:
 
-/opt/FJSVXosDevkit/sparc64fx/target/usr/include/sys/cdefs.h:
+/opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/sys/cdefs.h:
 
-/opt/FJSVXosDevkit/sparc64fx/target/usr/include/bits/wordsize.h:
+/opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/bits/wordsize.h:
 
-/opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs.h:
+/opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/gnu/stubs.h:
 
-/opt/FJSVXosDevkit/sparc64fx/target/usr/include/gnu/stubs-64.h:
+/opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/gnu/stubs-64.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_stlport_version.h:
+/opt/FJSVmxlang/bin/../include/c++/std/stl/_stlport_version.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl_user_config.h:
+/opt/FJSVmxlang/bin/../include/c++/std/stl_user_config.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat.h:
+/opt/FJSVmxlang/bin/../include/c++/std/stl/_config_compat.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_site_config.h:
+/opt/FJSVmxlang/bin/../include/c++/std/stl/_site_config.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stlcomp.h:
+/opt/FJSVmxlang/bin/../include/c++/std/config/stlcomp.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_fujitsu.h:
+/opt/FJSVmxlang/bin/../include/c++/std/config/stl_fujitsu.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/config/stl_confix.h:
+/opt/FJSVmxlang/bin/../include/c++/std/config/stl_confix.h:
 
-/opt/FJSVXosDevkit/sparc64fx/target/usr/include/string.h:
+/opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/string.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stddef.h:
+/opt/FJSVmxlang/bin/../include/c++/std/stddef.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/../stddef.h:
+/opt/FJSVmxlang/bin/../include/c++/../stddef.h:
 
-/opt/FJSVXosDevkit/sparc64fx/target/usr/include/xlocale.h:
+/opt/FJSVXosDevkit/sparc64fx/rfs/usr/include/xlocale.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_epilog.h:
+/opt/FJSVmxlang/bin/../include/c++/std/stl/_epilog.h:
 
-/opt/FJSVtclang/GM-1.2.0-19/bin/../include/c++/std/stl/_config_compat_post.h:
+/opt/FJSVmxlang/bin/../include/c++/std/stl/_config_compat_post.h:
 
 snappy-sinksource.h:

@@ -6,17 +6,17 @@
 #include <string.h>
 #include <iostream>
 #include <iomanip>
-#include <omp.h>
+#include "caffe/util/mpi.hpp"
+#include "caffe/common.hpp"
 
 class Timer
 {
 public:
   void Start(int i);
   void Stop(int i, int iter, std::string name);
-  void Init(int i, const char *n);
 private:
   double start[45], stop[45];
-  double time[45];
+  double time[45], min[45], max[45];
   int count[45];
   int iter;
 };

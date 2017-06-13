@@ -7,8 +7,8 @@
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/thread/detail/config.hpp>
-
 #include <boost/thread/thread_only.hpp>
+#include <boost/thread/detail/thread.hpp>
 #if defined BOOST_THREAD_USES_DATETIME
 #include <boost/thread/xtime.hpp>
 #endif
@@ -240,7 +240,36 @@ namespace boost
     thread::thread() BOOST_NOEXCEPT
     {}
 
-    bool thread::start_thread_noexcept()
+  void thread::join() {
+    if (this_thread::get_id() == get_id())
+      boost::throw_exception(thread_resource_error(system::errc::resource_deadlock_would_occur, "boost thread: trying joining itself"));
+    
+    BOOST_THREAD_VERIFY_PRECONDITION( join_noexcept(),
+				      thread_resource_error(system::errc::invalid_argument, "boost thread: thread not joinable")
+				      );
+  }
+
+  thread::~thread()
+        {
+
+	  #if defined BOOST_THREAD_PROVIDES_THREAD_DESTRUCTOR_CALLS_TERMINATE_IF_JOINABLE
+          if (joinable()) {
+            std::terminate();
+          }
+	  #else
+	     detach();
+	  #endif
+        }
+
+  void thread::start_thread() {
+    if (!start_thread_noexcept())
+      {
+	boost::throw_exception(thread_resource_error());
+      }
+  }
+
+  
+  bool thread::start_thread_noexcept()
     {
         thread_info->self=thread_info;
         int const res = pthread_create(&thread_info->thread_handle, 0, &thread_proxy, thread_info.get());

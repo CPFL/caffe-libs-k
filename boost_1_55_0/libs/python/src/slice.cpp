@@ -1,3 +1,4 @@
+#undef __GNUC__
 #include "boost/python/slice.hpp"
 
 // Copyright (c) 2004 Jonathan Brandmeyer

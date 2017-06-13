@@ -8,6 +8,7 @@
 
 #include "boost/algorithm/string.hpp"
 #include "caffe/caffe.hpp"
+#include "caffe/util/mpi.hpp"
 
 using caffe::Blob;
 using caffe::Caffe;
@@ -313,7 +314,10 @@ int main(int argc, char** argv) {
 
   int prov;
   MPI_Init_thread(NULL, NULL, MPI_THREAD_SERIALIZED, &prov);
+  
+  if (caffe::MPI::rank() == 0) LOG(INFO) << caffe::MPI::comm_size();
   CHECK_EQ(MPI_THREAD_SERIALIZED, prov);
+  
   //caffe::MPI::Init();
   if (argc == 2) {
     return GetBrewFunction(caffe::string(argv[1]))();

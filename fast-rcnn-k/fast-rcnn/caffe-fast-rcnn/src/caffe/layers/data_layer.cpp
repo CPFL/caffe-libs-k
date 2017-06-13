@@ -83,7 +83,6 @@ void DataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
 // This function is used to create a thread that prefetches the data.
 template <typename Dtype>
 void DataLayer<Dtype>::InternalThreadEntry() {
-
   CPUTimer batch_timer;
   batch_timer.Start();
   double read_time = 0;

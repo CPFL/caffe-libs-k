@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
-#include <boost/thread.hpp>
+//#include <boost/thread.hpp>
+
 #include <boost/make_shared.hpp>
 
 #include "caffe/util/mpi.hpp"
@@ -8,9 +9,12 @@
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/mpi_functions.hpp"
 #include "caffe/util/math_functions.hpp"
+#include "caffe/util/timer.hpp"
 
 namespace caffe {
 namespace MPI_ {
+
+static Timer timer;
 
 void Init() {
   MPI_Init(NULL, NULL);
@@ -43,24 +47,21 @@ int comm_size() {
 template <typename Dtype>
 void Scheduler<Dtype>::EntryRequests(const int size, Dtype* const data, const string& layer_name) {
   if (reqs_.size() == 0) {
-    vector<RequestParams> params = {};
+    vector<RequestParams> params;
     Request req = {boost::make_shared<vector<RequestParams> >(params), layer_name};
     reqs_.push_back(req);
   } else {
     if (layer_name != reqs_.back().name) {
-      vector<RequestParams> params = {};
+      vector<RequestParams> params;
       Request req = {boost::make_shared<vector<RequestParams> >(params), layer_name};
       reqs_.push_back(req);
     }
   }
-  //Dtype* const buff = (Dtype*)malloc(size*sizeof(Dtype));
-  //AtomicFlag* flag = new AtomicFlag(true);
   RequestParams param = {data, NULL, size, boost::shared_ptr<AtomicFlag>()};
   param.unoccupied = boost::make_shared<AtomicFlag>(new AtomicFlag(true));
   reqs_.back().params->push_back(param);
-  //reqs_.back().params->emplace_back(data, NULL, size, boost::shared_ptr<AtomicFlag>());
   reqs_.back().params->back().unoccupied = boost::make_shared<AtomicFlag>(new AtomicFlag(true));
-  LOG(INFO) << "Entry: " << layer_name << " size: " << size;
+  LOG(INFO) << "Entry: " << reqs_.back().name << " size: " << reqs_.back().params->back().size;
 }
 
 template <typename Dtype>
@@ -71,12 +72,14 @@ void Scheduler<Dtype>::Start() {
 template <typename Dtype>
 void Scheduler<Dtype>::SendRequest(const string& layer_name, int param_num) {
   RequestParams& param = (*GetParamsOf(layer_name))[param_num];
+  //LOG(INFO) << rank() << "Req " << layer_name;
   param.unoccupied->Set(false);
 }
 
 template <typename Dtype>
 bool Scheduler<Dtype>::CheckRequest(const string& layer_name) {
   const vector<RequestParams>* params = GetParamsOf(layer_name);
+  //LOG(INFO) << rank() << "Check" << layer_name;// << " " << (*params)[0].unoccupied->Get();
   if (params == NULL) {
     return true;
   }
@@ -127,11 +130,14 @@ void Scheduler<Dtype>::InternalThreadEntry() {
 	  if (stop_.Get()) {
 	    return;
 	  }
-	  usleep(1);
 	}
 	param = &reqs_[i].params->at(j);
 	target = i;
+	//LOG(INFO) << rank() << " Reduce start " << reqs_[target].name;
+	if (rank() == 0) timer.Start(target*2+j);
 	caffe_Allreduce<Dtype>(param->data, param->data, param->size, MPI_SUM);
+	if (rank() == 0) timer.Stop(target*2+j, 50, string("MPI") + reqs_[target].name);
+	//LOG(INFO) << rank() << " Reduce end " << reqs_[target].name;
 	param->unoccupied->Set(true);
       }
     }

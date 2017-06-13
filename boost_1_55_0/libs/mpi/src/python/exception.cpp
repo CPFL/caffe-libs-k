@@ -1,3 +1,4 @@
+#undef __GNUC__
 // Copyright (C) 2006 Douglas Gregor <doug.gregor -at- gmail.com>
 // Copyright (C) 2005 The Trustees of Indiana University.
 

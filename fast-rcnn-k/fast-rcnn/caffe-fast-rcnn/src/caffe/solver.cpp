@@ -176,7 +176,7 @@ void Solver<Dtype>::Step(int iters) {
       TestAll();
     }
 
-    timer.Start(29);
+    if (MPI::rank() == 0) timer.Start(29);
     const bool display = param_.display() && iter_ % param_.display() == 0;
     net_->set_debug_info(display && param_.debug_info());
     
@@ -213,18 +213,17 @@ void Solver<Dtype>::Step(int iters) {
         }
       }
     }
-    timer.Start(27);
+    if (MPI::rank() == 0) timer.Start(27);
     ComputeUpdateValue();
     net_->Update();
-    stringstream ss; ss << MPI::rank();
 
-    timer.Stop(27,10,ss.str()+string("update"));
+    if (MPI::rank() == 0) timer.Stop(27, 10, string("update"));
 
     // Save a snapshot if needed.
     if (param_.snapshot() && (iter_ + 1) % param_.snapshot() == 0) {
       Snapshot();
     }
-    timer.Stop(29, 50, std::string("50iter"));
+    if (MPI::rank() == 0) timer.Stop(29, 50, std::string("50iter"));
   }
 }
 

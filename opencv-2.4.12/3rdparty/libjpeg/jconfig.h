@@ -37,7 +37,7 @@ typedef unsigned char boolean;
 #define DEFAULT_MAX_MEM 1073741824
 
 #if !defined WIN32 && !defined _WIN32
-#define INLINE __inline__
+#define INLINE inline
 #undef NO_MKTEMP
 #endif
 

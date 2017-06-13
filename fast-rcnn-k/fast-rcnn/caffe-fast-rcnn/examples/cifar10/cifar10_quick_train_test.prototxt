@@ -1,36 +1,28 @@
 name: "CIFAR10_quick"
 layer {
   name: "cifar"
-  type: "Data"
+  type: "HDF5Data"
   top: "data"
   top: "label"
   include {
     phase: TRAIN
   }
-  transform_param {
-    mean_file: "mean.binaryproto"
-  }
-  data_param {
-    source: "cifar10_train_lmdb"
-    batch_size: 256
-    backend: LMDB
+  hdf5_data_param {
+    source: "hdf5/train.txt"
+    batch_size: 3456
   }
 }
 layer {
   name: "cifar"
-  type: "Data"
+  type: "HDF5Data"
   top: "data"
   top: "label"
   include {
     phase: TEST
   }
-  transform_param {
-    mean_file: "mean.binaryproto"
-  }
-  data_param {
-    source: "cifar10_test_lmdb"
-    batch_size: 256
-    backend: LMDB
+  hdf5_data_param {
+    source: "hdf5/test.txt"
+    batch_size: 3456
   }
 }
 layer {

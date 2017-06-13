@@ -7,7 +7,8 @@
  Forward declare boost::thread instead of including boost/thread.hpp
  to avoid a boost/NVCC issues (#1009, #1010) on OSX.
  */
-namespace boost { class thread; }
+#include <boost/thread.hpp>
+//namespace boost { class thread; }
 
 namespace caffe {
 

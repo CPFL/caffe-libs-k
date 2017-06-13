@@ -336,13 +336,13 @@ AUTOCONF = ${SHELL} /home/ra000022/a03330/caffe/glog-0.3.3_xcomp/missing --run a
 AUTOHEADER = ${SHELL} /home/ra000022/a03330/caffe/glog-0.3.3_xcomp/missing --run autoheader
 AUTOMAKE = ${SHELL} /home/ra000022/a03330/caffe/glog-0.3.3_xcomp/missing --run automake-1.11
 AWK = gawk
-CC = fccpx -Xg -pthread 
+CC = fccpx -Xg -pthread -mt -fPIC
 CCDEPMODE = depmode=gcc3
 CFLAGS = -Kfast
-CPP = fccpx -Xg -pthread  -E
+CPP = fccpx -Xg -pthread -mt -fPIC -E
 CPPFLAGS = 
-CXX = FCCpx -Xg -pthread -std=c++11
-CXXCPP = FCCpx -Xg -pthread -std=c++11 -E
+CXX = FCCpx -Xg -pthread -mt -fPIC
+CXXCPP = FCCpx -Xg -pthread -mt -fPIC -E
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
 CYGPATH_W = echo

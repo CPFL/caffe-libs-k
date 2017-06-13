@@ -91,3 +91,9 @@ LOCK
 LOG*
 CURRENT
 MANIFEST-*
+
+*.d
+examples/cifar10/*.out
+examples/cifar10/*.err
+examples/cifar10/*.i*
+examples/cifar10/bkup

@@ -1,13 +1,12 @@
 #ifndef CAFFE_UTIL_MPI_HPP_
 #define CAFFE_UTIL_MPI_HPP_
 
-#undef SEEK_SET
-#undef SEEK_END
-#undef SEEK_CUR
+//#undef SEEK_SET
+//#undef SEEK_END
+//#undef SEEK_CUR
 #include <mpi.h>
 #include <vector>
 #include <string>
-#include <boost/thread.hpp>
 
 #include "caffe/common.hpp"
 #include "caffe/internal_thread.hpp"

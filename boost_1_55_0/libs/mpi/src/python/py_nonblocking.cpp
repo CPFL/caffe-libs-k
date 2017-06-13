@@ -1,3 +1,4 @@
+#undef __GNUC__
 // (C) Copyright 2007 
 // Douglas Gregor <doug.gregor -at- gmail.com>
 // Andreas Kloeckner <inform -at- tiker.net>

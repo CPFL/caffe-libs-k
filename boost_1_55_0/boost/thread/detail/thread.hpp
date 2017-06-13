@@ -175,20 +175,20 @@ namespace boost
         bool start_thread_noexcept();
         bool start_thread_noexcept(const attributes& attr);
     public:
-        void start_thread()
-        {
+        void start_thread();
+	/*        {
           if (!start_thread_noexcept())
           {
             boost::throw_exception(thread_resource_error());
           }
-        }
-        void start_thread(const attributes& attr)
+	  }*/
+        /*void start_thread(const attributes& attr)
         {
           if (!start_thread_noexcept(attr))
           {
             boost::throw_exception(thread_resource_error());
           }
-        }
+	  }*/
 
         explicit thread(detail::thread_data_ptr data);
 
@@ -240,21 +240,24 @@ namespace boost
     public:
 #if 0 // This should not be needed anymore. Use instead BOOST_THREAD_MAKE_RV_REF.
 #if BOOST_WORKAROUND(__SUNPRO_CC, < 0x5100)
-        thread(const volatile thread&);
+        //thread(const volatile thread&);
 #endif
 #endif
-        thread() BOOST_NOEXCEPT;
+	~thread();
+	/*
         ~thread()
         {
 
-    #if defined BOOST_THREAD_PROVIDES_THREAD_DESTRUCTOR_CALLS_TERMINATE_IF_JOINABLE
+	  #if defined BOOST_THREAD_PROVIDES_THREAD_DESTRUCTOR_CALLS_TERMINATE_IF_JOINABLE
           if (joinable()) {
             std::terminate();
           }
-    #else
-            detach();
-    #endif
+	  #else
+	     detach();
+	  #endif
         }
+	*/
+        thread() BOOST_NOEXCEPT;
 #ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
         template <
           class F
@@ -460,10 +463,10 @@ namespace boost
 
 
         bool joinable() const BOOST_NOEXCEPT;
+        void join();
     private:
         bool join_noexcept();
     public:
-        inline void join();
 
 #ifdef BOOST_THREAD_USES_CHRONO
         template <class Rep, class Period>
@@ -724,7 +727,8 @@ namespace boost
     };
 
 #ifdef BOOST_THREAD_PLATFORM_PTHREAD
-    thread::id thread::get_id() const BOOST_NOEXCEPT
+  
+thread::id thread::get_id() const BOOST_NOEXCEPT
     {
     #if defined BOOST_THREAD_PROVIDES_BASIC_THREAD_ID
         return const_cast<thread*>(this)->native_handle();
@@ -733,7 +737,7 @@ namespace boost
         return (local_thread_info? id(local_thread_info) : id());
     #endif
     }
-
+  
     namespace this_thread
     {
         inline thread::id get_id() BOOST_NOEXCEPT
@@ -747,14 +751,14 @@ namespace boost
         }
     }
 #endif
-    void thread::join() {
+  /*    void thread::join() {
         if (this_thread::get_id() == get_id())
           boost::throw_exception(thread_resource_error(system::errc::resource_deadlock_would_occur, "boost thread: trying joining itself"));
 
         BOOST_THREAD_VERIFY_PRECONDITION( join_noexcept(),
             thread_resource_error(system::errc::invalid_argument, "boost thread: thread not joinable")
         );
-    }
+	}*/
 
 #ifdef BOOST_THREAD_PLATFORM_PTHREAD
     bool thread::do_try_join_until(struct timespec const &timeout)

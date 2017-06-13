@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # libtool - Provide generalized library-building support services.
-# Generated automatically by config.status (snappy) 1.1.3
+# Generated automatically by config.status (protobuf) 3.0.0-beta-2
 # Libtool was configured on host fx03:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 #
@@ -43,7 +43,7 @@ macro_version=2.2.6b
 macro_revision=1.3017
 
 # Whether or not to build shared libraries.
-build_libtool_libs=no
+build_libtool_libs=yes
 
 # Whether or not to build static libraries.
 build_old_libs=yes
@@ -52,11 +52,11 @@ build_old_libs=yes
 pic_mode=default
 
 # Whether or not to optimize for fast installation.
-fast_install=needless
+fast_install=yes
 
 # The host system.
-host_alias=
-host=x86_64-unknown-linux-gnu
+host_alias=sparc-linux
+host=sparc-unknown-linux-gnu
 host_os=linux-gnu
 
 # The build system.
@@ -80,7 +80,7 @@ EGREP="/bin/grep -E"
 FGREP="/bin/grep -F"
 
 # A BSD- or MS-compatible name lister.
-NM="/usr/bin/nm -B"
+NM="link -dump -symbols"
 
 # Whether we need soft or hard links.
 LN_S="ln -s"
@@ -135,16 +135,16 @@ LTCC="fccpx -Xg -pthread "
 LTCFLAGS="-Kfast"
 
 # Take the output of nm and produce a listing of raw symbols and C names.
-global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 \\2 \\2/p'"
+global_symbol_pipe=""
 
 # Transform the output of nm in a proper C declaration.
-global_symbol_to_cdecl="sed -n -e 's/^T .* \\(.*\\)\$/extern int \\1();/p' -e 's/^[ABCDGIRSTW]* .* \\(.*\\)\$/extern char \\1;/p'"
+global_symbol_to_cdecl=""
 
 # Transform the output of nm in a C name address pair.
-global_symbol_to_c_name_address="sed -n -e 's/^: \\([^ ]*\\) \$/  {\\\"\\1\\\", (void *) 0},/p' -e 's/^[ABCDGIRSTW]* \\([^ ]*\\) \\([^ ]*\\)\$/  {\"\\2\", (void *) \\&\\2},/p'"
+global_symbol_to_c_name_address="sed -n -e 's/^: \\([^ ]*\\) \$/  {\\\"\\1\\\", (void *) 0},/p' -e 's/^[BCDEGRST]* \\([^ ]*\\) \\([^ ]*\\)\$/  {\"\\2\", (void *) \\&\\2},/p'"
 
 # Transform the output of nm in a C name address pair when lib prefix is needed.
-global_symbol_to_c_name_address_lib_prefix="sed -n -e 's/^: \\([^ ]*\\) \$/  {\\\"\\1\\\", (void *) 0},/p' -e 's/^[ABCDGIRSTW]* \\([^ ]*\\) \\(lib[^ ]*\\)\$/  {\"\\2\", (void *) \\&\\2},/p' -e 's/^[ABCDGIRSTW]* \\([^ ]*\\) \\([^ ]*\\)\$/  {\"lib\\2\", (void *) \\&\\2},/p'"
+global_symbol_to_c_name_address_lib_prefix="sed -n -e 's/^: \\([^ ]*\\) \$/  {\\\"\\1\\\", (void *) 0},/p' -e 's/^[BCDEGRST]* \\([^ ]*\\) \\(lib[^ ]*\\)\$/  {\"\\2\", (void *) \\&\\2},/p' -e 's/^[BCDEGRST]* \\([^ ]*\\) \\([^ ]*\\)\$/  {\"lib\\2\", (void *) \\&\\2},/p'"
 
 # The name of the directory that contains temporary libtool files.
 objdir=.libs
@@ -187,7 +187,7 @@ extract_expsyms_cmds=""
 
 # Variables whose values should be saved in libtool wrapper scripts and
 # restored at link time.
-variables_saved_for_relink="PATH LD_LIBRARY_PATH  GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"
+variables_saved_for_relink="PATH LD_LIBRARY_PATH LD_RUN_PATH GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"
 
 # Do we need the "lib" prefix for modules?
 need_lib_prefix=no
@@ -199,7 +199,7 @@ need_version=no
 version_type=linux
 
 # Shared library runtime path variable.
-runpath_var=
+runpath_var=LD_RUN_PATH
 
 # Shared library path variable.
 shlibpath_var=LD_LIBRARY_PATH
@@ -254,7 +254,7 @@ striplib="strip --strip-unneeded"
 
 
 # The linker used to build libraries.
-LD="/opt/FJSVmxlang/util/bin/sparc64-unknown-linux-gnu-ld -m elf_x86_64"
+LD="/opt/FJSVmxlang/util/bin/sparc64-unknown-linux-gnu-ld -m elf64_sparc"
 
 # Commands used to build an old-style archive.
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$oldlib"
@@ -281,16 +281,16 @@ link_static_flag=""
 compiler_c_o="yes"
 
 # Whether or not to add -lc for building shared libraries.
-build_libtool_need_lc=yes
+build_libtool_need_lc=no
 
 # Whether or not to disallow shared libs when runtime libs are static.
 allow_libtool_libs_with_static_runtimes=no
 
 # Compiler flag to allow reflexive dlopens.
-export_dynamic_flag_spec=""
+export_dynamic_flag_spec="\${wl}--export-dynamic"
 
 # Compiler flag to generate shared objects directly from archives.
-whole_archive_flag_spec=""
+whole_archive_flag_spec="\${wl}--whole-archive\$convenience \${wl}--no-whole-archive"
 
 # Whether the compiler copes with passing no objects directly.
 compiler_needs_object="no"
@@ -302,8 +302,11 @@ old_archive_from_new_cmds=""
 old_archive_from_expsyms_cmds=""
 
 # Commands used to build a shared archive.
-archive_cmds=""
-archive_expsym_cmds=""
+archive_cmds="\$CC -shared \$libobjs \$deplibs \$compiler_flags \${wl}-soname \$wl\$soname -o \$lib"
+archive_expsym_cmds="echo \\\"{ global:\\\" > \$output_objdir/\$libname.ver~
+	    cat \$export_symbols | sed -e \\\"s/\\\\(.*\\\\)/\\\\1;/\\\" >> \$output_objdir/\$libname.ver~
+	    echo \\\"local: *; };\\\" >> \$output_objdir/\$libname.ver~
+	    \$CC -shared \$libobjs \$deplibs \$compiler_flags \${wl}-soname \$wl\$soname \${wl}-version-script \${wl}\$output_objdir/\$libname.ver -o \$lib"
 
 # Commands used to build a loadable module if different from building
 # a shared archive.
@@ -321,7 +324,7 @@ no_undefined_flag=""
 
 # Flag to hardcode $libdir into a binary during linking.
 # This must work even if $libdir does not exist
-hardcode_libdir_flag_spec=""
+hardcode_libdir_flag_spec="\${wl}-rpath \${wl}\$libdir"
 
 # If ld is used when linking, flag to hardcode $libdir into a binary
 # during linking.  This must work even if $libdir does not exist.
@@ -382,7 +385,7 @@ prelink_cmds=""
 file_list_spec=""
 
 # How to hardcode a shared library path into an executable.
-hardcode_action=unsupported
+hardcode_action=immediate
 
 # The directories searched by this compiler when creating a shared library.
 compiler_lib_search_dirs=""
@@ -8906,7 +8909,7 @@ build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
 # ### BEGIN LIBTOOL TAG CONFIG: CXX
 
 # The linker used to build libraries.
-LD="/opt/FJSVmxlang/util/bin/sparc64-unknown-linux-gnu-ld -m elf_x86_64"
+LD="/opt/FJSVmxlang/util/bin/sparc64-unknown-linux-gnu-ld -m elf64_sparc"
 
 # Commands used to build an old-style archive.
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$oldlib"
@@ -8939,10 +8942,10 @@ build_libtool_need_lc=no
 allow_libtool_libs_with_static_runtimes=no
 
 # Compiler flag to allow reflexive dlopens.
-export_dynamic_flag_spec=""
+export_dynamic_flag_spec="\${wl}--export-dynamic"
 
 # Compiler flag to generate shared objects directly from archives.
-whole_archive_flag_spec=""
+whole_archive_flag_spec="\${wl}--whole-archive\$convenience \${wl}--no-whole-archive"
 
 # Whether the compiler copes with passing no objects directly.
 compiler_needs_object="no"
@@ -8954,8 +8957,8 @@ old_archive_from_new_cmds=""
 old_archive_from_expsyms_cmds=""
 
 # Commands used to build a shared archive.
-archive_cmds="\$CC -shared -nostdlib \$predep_objects \$libobjs \$deplibs \$postdep_objects \$compiler_flags -o \$lib"
-archive_expsym_cmds=""
+archive_cmds="\$CC -shared -nostdlib \$predep_objects \$libobjs \$deplibs \$postdep_objects \$compiler_flags \${wl}-soname \$wl\$soname -o \$lib"
+archive_expsym_cmds="\$CC -shared -nostdlib \$predep_objects \$libobjs \$deplibs \$postdep_objects \$compiler_flags \${wl}-soname \$wl\$soname \${wl}-retain-symbols-file \$wl\$export_symbols -o \$lib"
 
 # Commands used to build a loadable module if different from building
 # a shared archive.
@@ -8963,7 +8966,7 @@ module_cmds=""
 module_expsym_cmds=""
 
 # Whether we are building with GNU ld or not.
-with_gnu_ld="no"
+with_gnu_ld="yes"
 
 # Flag that allows shared libraries with undefined symbols to be built.
 allow_undefined_flag=""
@@ -8973,7 +8976,7 @@ no_undefined_flag=""
 
 # Flag to hardcode $libdir into a binary during linking.
 # This must work even if $libdir does not exist
-hardcode_libdir_flag_spec=""
+hardcode_libdir_flag_spec="\${wl}-rpath \${wl}\$libdir"
 
 # If ld is used when linking, flag to hardcode $libdir into a binary
 # during linking.  This must work even if $libdir does not exist.
@@ -9034,7 +9037,7 @@ prelink_cmds=""
 file_list_spec=""
 
 # How to hardcode a shared library path into an executable.
-hardcode_action=unsupported
+hardcode_action=immediate
 
 # The directories searched by this compiler when creating a shared library.
 compiler_lib_search_dirs=""
@@ -9044,7 +9047,7 @@ compiler_lib_search_dirs=""
 predep_objects="/opt/FJSVXosDevkit/sparc64fx/rfs/usr/lib64/crti.o /opt/FJSVXosDevkit/sparc64fx/rfs/usr/lib/gcc/sparc64-unknown-linux/4.4.4/crtbeginS.o"
 postdep_objects="/opt/FJSVXosDevkit/sparc64fx/rfs/usr/lib/gcc/sparc64-unknown-linux/4.4.4/crtendS.o /opt/FJSVXosDevkit/sparc64fx/rfs/usr/lib64/crtn.o"
 predeps=""
-postdeps="-L/opt/FJSVmxlang/bin/../lib64 -L/opt/FJSVXosDevkit/sparc64fx/rfs/usr/lib64 -lstd -lm -lstdc++ -lc -L/opt/FJSVXosDevkit/sparc64fx/rfs/opt/FJSVxosmmm/lib64"
+postdeps="-L/opt/FJSVmxlang/bin/../lib64 -L/opt/FJSVXosDevkit/sparc64fx/rfs/usr/lib64 -lstd -lm -lstdc++ -L/opt/FJSVXosDevkit/sparc64fx/rfs/opt/FJSVxosmmm/lib64"
 
 # The library search path used internally by the compiler when linking
 # a shared library.
