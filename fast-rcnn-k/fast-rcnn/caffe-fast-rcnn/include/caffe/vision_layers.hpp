@@ -4,8 +4,6 @@
 #include <string>
 #include <utility>
 #include <vector>
-//#include <xmmintrin.h>
-//#include <immintrin.h>
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
@@ -50,10 +48,6 @@ class BaseConvolutionLayer : public Layer<Dtype> {
   void backward_cpu_bias(Dtype* bias, const Dtype* input);
   void forward_cpu_pipelined(const Dtype* input, const Dtype* weights,
 			     Dtype* output, const Dtype* bias, int num, bool skip_im2col = false);
-  void backward_cpu_pipelined(const Dtype* input, const Dtype* weights,
-      Dtype* output);
-  void weight_cpu_pipelined(const Dtype* input, const Dtype* output, Dtype*
-      weights);
 
 #ifndef CPU_ONLY
   void forward_gpu_gemm(const Dtype* col_input, const Dtype* weights,
@@ -80,6 +74,7 @@ class BaseConvolutionLayer : public Layer<Dtype> {
   int height_, width_;
   int group_;
   int num_output_;
+  int chunk_size_;
   int height_out_, width_out_;
   bool bias_term_;
   bool is_1x1_;
@@ -116,7 +111,8 @@ class BaseConvolutionLayer : public Layer<Dtype> {
   int output_offset_;
 
   Blob<Dtype> col_buffer_;
-  Dtype* col_in_pipe_;
+  Blob<Dtype> col_buffer_forward_;
+  Blob<Dtype> col_in_pipe_;
   Blob<Dtype> bias_multiplier_;
 };
 
