@@ -134,9 +134,9 @@ void Scheduler<Dtype>::InternalThreadEntry() {
 	param = &reqs_[i].params->at(j);
 	target = i;
 	//LOG(INFO) << rank() << " Reduce start " << reqs_[target].name;
-	if (rank() == 0) timer.Start(target*2+j);
+	// if (rank() == 0) timer.Start(target*2+j);
 	caffe_Allreduce<Dtype>(param->data, param->data, param->size, MPI_SUM);
-	if (rank() == 0) timer.Stop(target*2+j, 50, string("MPI") + reqs_[target].name);
+	// if (rank() == 0) timer.Stop(target*2+j, 50, string("MPI") + reqs_[target].name);
 	//LOG(INFO) << rank() << " Reduce end " << reqs_[target].name;
 	param->unoccupied->Set(true);
       }

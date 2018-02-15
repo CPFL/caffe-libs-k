@@ -170,15 +170,15 @@ template <typename Dtype>
 void BaseConvolutionLayer<Dtype>::forward_cpu_gemm(const Dtype* input,
       const Dtype* weights, Dtype* output, bool skip_im2col) {
   const Dtype* col_buff = input;
-  timer.Start(12);
+  // timer.Start(12);
   if (!is_1x1_) {
     if (!skip_im2col) {
       conv_im2col_cpu(input, col_buffer_.mutable_cpu_data());
     }
     col_buff = col_buffer_.cpu_data();
   }
-  timer.Stop(12, 100, "im2col");
-  timer.Start(13);
+  // timer.Stop(12, 100, "im2col");
+  // timer.Start(13);
   for (int g = 0; g < group_; ++g) {
     caffe_cpu_gemm<Dtype>(CblasNoTrans, CblasNoTrans,
 			  conv_out_channels_ / group_,
@@ -190,7 +190,7 @@ void BaseConvolutionLayer<Dtype>::forward_cpu_gemm(const Dtype* input,
 			  (Dtype)0.,
 			  output + output_offset_ * g);
   }
-  timer.Stop(13, 100, "blas");
+  // timer.Stop(13, 100, "blas");
 }
 
 #define im2col_partial(im_data, col_data, curr_height)			\

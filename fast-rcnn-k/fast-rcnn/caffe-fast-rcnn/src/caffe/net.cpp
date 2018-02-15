@@ -486,10 +486,10 @@ Dtype Net<Dtype>::ForwardFromTo(int start, int end) {
   }
   for (int i = start; i <= end; ++i) {
     // LOG(ERROR) << "Forwarding " << layer_names_[i];
-    if (MPI::rank() == 0) timer.Start(i);
+    // if (MPI::rank() == 0) timer.Start(i);
     layers_[i]->Reshape(bottom_vecs_[i], top_vecs_[i]);
     Dtype layer_loss = layers_[i]->Forward(bottom_vecs_[i], top_vecs_[i]);
-    if (MPI::rank() == 0) timer.Stop(i, 50, layer_names_[i]);
+    // if (MPI::rank() == 0) timer.Stop(i, 50, layer_names_[i]);
     loss += layer_loss;
     if (debug_info_) { ForwardDebugInfo(i); }
 
@@ -567,25 +567,25 @@ void Net<Dtype>::BackwardFromTo(int start, int end) {
   CHECK_LT(start, layers_.size());
   for (int i = start; i >= end; --i) {
     if (layer_need_backward_[i]) {
-      if (MPI::rank() == 0)
-	timer.Start(i+layers_.size()+2);
+      // if (MPI::rank() == 0)
+	// timer.Start(i+layers_.size()+2);
       layers_[i]->Backward(top_vecs_[i],
 			   bottom_need_backward_[i],
 			   bottom_vecs_[i]);
       
-      if (MPI::rank() == 0)
-	timer.Stop(i+layers_.size()+2, 50, layer_names_[i]);
+      // if (MPI::rank() == 0)
+      // 	timer.Stop(i+layers_.size()+2, 50, layer_names_[i]);
       if (debug_info_) { BackwardDebugInfo(i); }
     }
   }
-  if (MPI::rank() == 0) timer.Start(30);
+  // if (MPI::rank() == 0) timer.Start(30);
   while (!scheduler.CheckRequest(layer_names_[end+1])) {
     usleep(100);
   };
   //LOG(INFO) << MPI::rank() << "barrier start.";
   MPI_Barrier(MPI_COMM_WORLD);
   //LOG(INFO) << MPI::rank() << "barrier end.";
-  if (MPI::rank() == 0) timer.Stop(30, 50, "mpiwait");
+  // if (MPI::rank() == 0) timer.Stop(30, 50, "mpiwait");
 }
 
 template <typename Dtype>
